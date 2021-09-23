@@ -4,7 +4,9 @@
 package gestorDeCriticas;
 
 /**
- * @author Ricardo Espantaleón Pérez
+ * La clase Espectador con atributos nombre y apellidos, nick , y email
+ * 
+ * @author Enrique Estévez Mayoral
  *
  */
 public class Espectador {
@@ -14,16 +16,83 @@ public class Espectador {
 	private String nick;
 	private String email;
 
-	// Métodos
-	Espectador(String nick) {
+	// Metodos
+
+	/**
+	 * Constructor de la clase Espectador que se le pasa por argumento el nick, el
+	 * nombre y los apellidos, y el email
+	 * 
+	 * @param nick
+	 * @param nombreApellidos
+	 * @param email
+	 * @author Enrique Estévez Mayoral
+	 */
+	Espectador(String nick, String nombreApellidos, String email) {
 		this.nick = nick;
-		// ...
+		this.nombreApellidos = nombreApellidos;
+		this.email = email;
 	}
 
+	/**
+	 * Devuelve el nombre y apellidos del Espectador
+	 * 
+	 * @return nombreApellidos
+	 * @author Enrique Estévez Mayoral
+	 */
 	String getNombreApellidos() {
 		return this.nombreApellidos;
 	}
 
-	// TODO (hacer gets y sets)
+	/**
+	 * Devuelve el nick del Espectador
+	 * 
+	 * @return nick
+	 * @author Enrique Estévez Mayoral
+	 */
+	String getNick() {
+		return this.nick;
+	}
 
+	/**
+	 * Devuelve el email del Espectador
+	 * 
+	 * @return email
+	 * @author Enrique Estévez Mayoral
+	 */
+	String getEmail() {
+		return this.email;
+	}
+
+	/**
+	 * Cambia el valor de la variable nombreApellidos por el valor pasado por
+	 * argumento a la función
+	 * 
+	 * @param nombreApellidos
+	 * @author Enrique Estévez Mayoral
+	 */
+	void setNombreApellidos(String nombreApellidos) {
+		this.nombreApellidos = nombreApellidos;
+	}
+
+	/**
+	 * Cambia el valor de la variable nick por el valor pasado por argumento a la
+	 * función
+	 * 
+	 * @param nick
+	 * @author Enrique Estévez Mayoral
+	 */
+	void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	/**
+	 * Cambia el valor de la variable email por el valor pasado por argumento a la
+	 * función
+	 * 
+	 * @param email
+	 * @author Enrique Estévez Mayoral
+	 */
+	void setEmail(String email) {
+		this.email = email;
+	}
 }
