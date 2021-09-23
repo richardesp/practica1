@@ -157,7 +157,7 @@ public class Critica {
 	 * @author Enrique Estévez Mayoral
 	 */
 	public void agregarValoracion(float valoracionCritica) {
-		if (valoracionCritica >= 0 && valoracionCritica <= 10)
+		if (valoracionCritica >= 0 && valoracionCritica <= 10) // Aqu
 			valoracion.add(valoracionCritica);
 		else
 			System.out.println("Ese valor no es valido, debe ser un valor entre 0 y 10");
