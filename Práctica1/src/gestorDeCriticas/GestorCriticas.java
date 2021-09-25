@@ -59,9 +59,11 @@ public class GestorCriticas {
 	public boolean existeNick(String nick) {
 		if (listaUsuariosVacia())
 			return false;
+
 		for (int index = 0; index < usuarios.size(); ++index) {
-			if (usuarios.get(index).getNick() == nick)
+			if (nick.equals(usuarios.get(index).getNick()))
 				return true;
+
 		}
 
 		return false;
@@ -73,7 +75,7 @@ public class GestorCriticas {
 	 * @author Ricardo Espantaleón Pérez
 	 */
 	public boolean listaUsuariosVacia() {
-		return usuarios.size() == 0;
+		return usuarios.isEmpty();
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class GestorCriticas {
 	 * @author Ricardo Espantaleón Pérez
 	 */
 	public boolean listaCriticasVacia() {
-		return criticas.size() == 0;
+		return criticas.isEmpty();
 	}
 
 	/**
@@ -124,8 +126,8 @@ public class GestorCriticas {
 	public void crearUsuario(Espectador espectador) throws Exception {
 		if (existeNick(espectador.getNick()))
 			throw new Exception("Usuario ya registrado");
-		usuarios.add(espectador);
 
+		usuarios.add(espectador);
 	}
 
 	/**
@@ -144,7 +146,7 @@ public class GestorCriticas {
 		Espectador espectador = getUsuario(nick);
 		usuarios.remove(espectador);
 	}
-	
+
 	/**
 	 * La función cambia el nombre y apellidos a un usuario
 	 * 
@@ -162,6 +164,7 @@ public class GestorCriticas {
 		for (int i = 0; i < usuarios.size(); i++) {
 			if (nick == usuarios.get(i).getNick()) {
 				indiceUsuario = i;
+				break;
 			}
 		}
 		usuarios.get(indiceUsuario).setNombreApellidos(nombreApellidos);
@@ -189,6 +192,7 @@ public class GestorCriticas {
 		}
 		usuarios.get(indiceUsuario).setEmail(email);
 	}
+
 	/**
 	 * La función añade una crítica nueva al vector
 	 * 
@@ -228,15 +232,18 @@ public class GestorCriticas {
 	 * @author Nicolás López
 	 * @return un vector con las críticas
 	 */
-	public ArrayList<Critica> getCriticas() {
+	public ArrayList<Critica> getCriticas() throws Exception {
+		if (listaCriticasVacia())
+			throw new Exception("Lista de críticas vacía");
+
 		return criticas;
 	}
 
 	/**
 	 * Vota una crítica de otro autor
 	 * 
-	 * @param nick   para identificar el usuario
-	 * @param titulo para identificar la crítica en concreto
+	 * @param nick       para identificar el usuario
+	 * @param titulo     para identificar la crítica en concreto
 	 * @param valoracion valor de la nota
 	 * @return
 	 * @author Nicolás López
@@ -286,6 +293,7 @@ public class GestorCriticas {
 	public ArrayList<Espectador> getUsuarios() throws Exception {
 		if (listaUsuariosVacia())
 			throw new Exception("Lista de usuarios vacía");
+
 		return usuarios;
 	}
 
