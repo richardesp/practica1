@@ -101,7 +101,7 @@ public class GestorCriticas {
 		if (!existeNick(nick))
 			throw new Exception("Usuario no existente en el sistema");
 
-		Espectador usuario = new Espectador(null, null, null);
+		Espectador usuario;
 		for (int index = 0; index < usuarios.size(); ++index) {
 			if (usuarios.get(index).getNick() == nick) {
 				usuario = usuarios.get(index);
