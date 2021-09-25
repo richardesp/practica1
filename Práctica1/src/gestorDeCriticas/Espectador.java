@@ -7,6 +7,7 @@ package gestorDeCriticas;
  * La clase Espectador con atributos nombre y apellidos, nick , y email
  * 
  * @author Enrique Estévez Mayoral
+ * @author Ricardo Espantaleón Pérez
  *
  */
 public class Espectador {
@@ -26,6 +27,7 @@ public class Espectador {
 	 * @param nombreApellidos
 	 * @param email
 	 * @author Enrique Estévez Mayoral
+	 * @author Ricardo Espantaleón Pérez
 	 */
 	Espectador(String nick, String nombreApellidos, String email) {
 		this.nick = nick;
@@ -38,8 +40,9 @@ public class Espectador {
 	 * 
 	 * @return nombreApellidos
 	 * @author Enrique Estévez Mayoral
+	 * @author Ricardo Espantaleón Pérez
 	 */
-	String getNombreApellidos() {
+	public String getNombreApellidos() {
 		return this.nombreApellidos;
 	}
 
@@ -48,8 +51,9 @@ public class Espectador {
 	 * 
 	 * @return nick
 	 * @author Enrique Estévez Mayoral
+	 * @author Ricardo Espantaleón Pérez
 	 */
-	String getNick() {
+	public String getNick() {
 		return this.nick;
 	}
 
@@ -58,8 +62,9 @@ public class Espectador {
 	 * 
 	 * @return email
 	 * @author Enrique Estévez Mayoral
+	 * @author Ricardo Espantaleón Pérez
 	 */
-	String getEmail() {
+	public String getEmail() {
 		return this.email;
 	}
 
@@ -69,8 +74,9 @@ public class Espectador {
 	 * 
 	 * @param nombreApellidos
 	 * @author Enrique Estévez Mayoral
+	 * @author Ricardo Espantaleón Pérez
 	 */
-	void setNombreApellidos(String nombreApellidos) {
+	public void setNombreApellidos(String nombreApellidos) {
 		this.nombreApellidos = nombreApellidos;
 	}
 
@@ -81,7 +87,7 @@ public class Espectador {
 	 * @param nick
 	 * @author Enrique Estévez Mayoral
 	 */
-	void setNick(String nick) {
+	public void setNick(String nick) {
 		this.nick = nick;
 	}
 
@@ -91,8 +97,9 @@ public class Espectador {
 	 * 
 	 * @param email
 	 * @author Enrique Estévez Mayoral
+	 * @author Ricardo Espantaleón Pérez
 	 */
-	void setEmail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 }
