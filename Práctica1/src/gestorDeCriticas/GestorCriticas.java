@@ -20,7 +20,9 @@ public class GestorCriticas {
 	private static GestorCriticas instance = null;
 	// Lista de usuarios
 	private ArrayList<Espectador> usuarios;
-	// Lista de críticas
+	// Lista de críticas, solo podrá existir una crítica si existe su
+	// correspondiente autor en el vector de usuarios
+	// sino lanzo excepción
 	private ArrayList<Critica> criticas;
 
 	// Métodos
