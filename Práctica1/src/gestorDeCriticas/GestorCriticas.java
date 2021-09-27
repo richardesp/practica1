@@ -101,16 +101,16 @@ public class GestorCriticas {
 		if (!existeNick(nick))
 			throw new Exception("Usuario no existente en el sistema");
 
-		Espectador usuario;
+		Espectador e = null;
+
 		for (int index = 0; index < usuarios.size(); ++index) {
-			if (usuarios.get(index).getNick() == nick) {
-				usuario = usuarios.get(index);
+			if (nick.equals(usuarios.get(index).getNick())) {
+				e = usuarios.get(index);
 				break;
 			}
 		}
 
-		return usuario;
-
+		return e;
 	}
 
 	/**
@@ -193,6 +193,17 @@ public class GestorCriticas {
 		usuarios.get(indiceUsuario).setEmail(email);
 	}
 
+	private boolean criticaCreada(Critica critica) {
+		ArrayList<Critica> criticasUsuario = getCriticasUsuario(critica.getAutor().getNick());
+
+		for (int i = 0; i < criticasUsuario.size(); ++i) {
+			if (criticasUsuario.get(i).getTitulo().equalsIgnoreCase(critica.getTitulo()))
+				return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * La función añade una crítica nueva al vector
 	 * 
@@ -202,8 +213,8 @@ public class GestorCriticas {
 	 * 
 	 */
 	public void crearCritica(Critica critica) throws Exception {
-		if (!existeNick(critica.getNickAutor()))
-			throw new Exception("Usuario no existente en el sistema");
+		if (criticaCreada(critica))
+			throw new Exception("Crítica ya existente en el sistema");
 		criticas.add(critica);
 	}
 
@@ -215,10 +226,14 @@ public class GestorCriticas {
 	 * @return
 	 * @author Nicolás López
 	 */
-	public void borrarCritica(String nick, String titulo) {
+	public void borrarCritica(String nick, String titulo) throws Exception {
+		if (!existeCritica(nick, titulo))
+			throw new Exception("La crítica no existe");
+
 		int indiceCritica = -1;
 		for (int i = 0; i < criticas.size(); i++) {
-			if (nick == criticas.get(i).getNickAutor() && titulo == criticas.get(i).getTitulo()) {
+			if (nick.equalsIgnoreCase(criticas.get(i).getNickAutor())
+					&& titulo.equalsIgnoreCase(criticas.get(i).getTitulo())) {
 				indiceCritica = i;
 			}
 		}
@@ -239,25 +254,39 @@ public class GestorCriticas {
 		return criticas;
 	}
 
+	private boolean existeCritica(String nick, String titulo) {
+		if (listaCriticasVacia())
+			return false;
+
+		for (int i = 0; i < criticas.size(); ++i) {
+			if (criticas.get(i).getTitulo().equalsIgnoreCase(titulo)
+					&& criticas.get(i).getNickAutor().equalsIgnoreCase(nick))
+				return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Vota una crítica de otro autor
 	 * 
-	 * @param nick       para identificar el usuario
-	 * @param titulo     para identificar la crítica en concreto
+	 * @param nick       Autor de la crítica
+	 * @param titulo     Título a la que va diriga la crítica
 	 * @param valoracion valor de la nota
 	 * @return
-	 * @author Nicolás López
+	 * @author Ricardo Espantaleón
 	 * 
 	 */
 	public void votarCritica(String nick, String titulo, float valoracion) throws Exception {
 		if (!existeNick(nick))
 			throw new Exception("Usuario no existente en el sistema");
-		if (valoracion < 0 || valoracion > 10) {
+
+		if (valoracion < 0 || valoracion > 10)
 			throw new Exception("Valoraciones deben ser un flotante entre 0 y 10");
-		}
+
 		int indiceCritica = -1;
 		for (int i = 0; i < criticas.size(); i++) {
-			if (nick == criticas.get(i).getNickAutor() && titulo == criticas.get(i).getTitulo()) {
+			if (nick.equalsIgnoreCase(criticas.get(i).getNickAutor()) && titulo.equalsIgnoreCase(criticas.get(i).getTitulo())) {
 				indiceCritica = i;
 			}
 		}
