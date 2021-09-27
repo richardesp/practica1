@@ -51,6 +51,7 @@ public class Main {
 
 				if (gestorCriticas.existeNick(nickName)) {
 					usuarioLogeado = nickName;
+
 					menuUsuarioLogeado();
 
 				} else {
@@ -142,82 +143,197 @@ public class Main {
 
 			switch (ans) {
 			case 1:
+				limpiarPantalla();
+
 				String titulo, comentario;
 				float puntuacion;
-				System.out.println("Introduzca el título de la obra a criticar\n");
+
+				System.out.println("Introduzca el título de la obra a criticar: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
-				System.out.println("Introduzca la valoracion (flotante del 1 al 10\n");
-				puntuacion = input.nextFloat();
-				input.nextLine();
+				System.out.print("Introduzca la valoración (flotante del 1 al 10): ");
+				try {
+					puntuacion = input.nextFloat();
+					input.nextLine();
+
+				} catch (Exception e) {
+					System.err.print("El formato debe ser numérico flotante\n\n");
+
+					systemPause();
+					break;
+				}
+
 				// Me aseguro de que el valor sea válido
 				if (puntuacion > 10) {
 					puntuacion = 10;
+
 				} else if (puntuacion < 0) {
 					puntuacion = 0;
+
 				}
 				System.out.print("\n");
-				System.out.println("Introduzca el comentario\n");
+				System.out.print("Introduzca el comentario: ");
 				comentario = input.nextLine();
-				Critica criticaCreada = new Critica(titulo, puntuacion, comentario,
-						gestorCriticas.getUsuario(usuarioLogeado));
-				gestorCriticas.crearCritica(criticaCreada);
+				System.out.print("\n");
+
+				Espectador autor = null;
+
+				try {
+					autor = gestorCriticas.getUsuario(usuarioLogeado);
+				} catch (Exception e) {
+					System.err.print("El usuario no existe en el sistema\n\n");
+
+					systemPause();
+					break;
+				}
+
+				Critica criticaCreada = new Critica(titulo, puntuacion, comentario, autor);
+				try {
+					gestorCriticas.crearCritica(criticaCreada);
+				} catch (Exception e) {
+					System.err.print("Ya has creado una crítica sobre este Espectáculo\n\n");
+
+					systemPause();
+					break;
+				}
+
+				System.out.print("Crítica creada correctamente\n\n");
+				systemPause();
+
 				break;
 
 			case 2:
+				limpiarPantalla();
+
 				ArrayList<Critica> consulta = new ArrayList<Critica>();
-				consulta = gestorCriticas.getCriticas();
-				for (int i = 0; i < consulta.size(); i++) {
-					System.out.println("Título: " + consulta.get(i).getTitulo() + "\nPuntuación: "
-							+ consulta.get(i).getPuntuacion() + "\nComentario:" + consulta.get(i).getComentario()
-							+ "\n Autor: " + consulta.get(i).getAutor());
+
+				try {
+					consulta = gestorCriticas.getCriticas();
+				} catch (Exception e) {
+					System.err.print("No existe ninguna crítica en el sistema\n\n");
+
+					systemPause();
+					break;
 				}
+
+				for (int i = 0; i < consulta.size(); i++) {
+					System.out.println("Crítica[" + (i + 1) + "]\n" + "Título: " + consulta.get(i).getTitulo()
+							+ "\nPuntuación: " + consulta.get(i).getPuntuacion() + "\nComentario: "
+							+ consulta.get(i).getComentario() + "\nAutor: " + consulta.get(i).getNickAutor() + "\n");
+				}
+
+				systemPause();
 				break;
 
 			case 3:
+				limpiarPantalla();
+
 				String tituloABorrar;
-				System.out.println("Introduzca el título de la obra a borrar\n");
+				System.out.print("Introduzca el título de la obra a borrar: ");
 				tituloABorrar = input.nextLine();
 				System.out.print("\n");
-				gestorCriticas.borrarCritica(usuarioLogeado, tituloABorrar);
+				try {
+					gestorCriticas.borrarCritica(usuarioLogeado, tituloABorrar);
+				} catch (Exception e) {
+					System.err.print("Error, la crítica introducida no ha sido encontrada (recuerda que solo puedes borrar aquellas crítica propias)\n\n");
+					
+					systemPause();
+					break;
+				}
+
+				System.out.print("La crítica ha sido eliminada correctamente\n\n");
+				systemPause();
+
 				break;
 
 			case 4:
-				String tituloAValorar;
+				String tituloAValorar, autorAValorar;
 				float valoracion;
-				System.out.println("las obras disponibles para valorar son:\n");
-				//Le mostramos todas las críticas que no son suyas para que elija cual valorar
+
 				ArrayList<Critica> consultaValorar = new ArrayList<Critica>();
-				consultaValorar = gestorCriticas.getCriticas();
-				for (int i = 0; i < consultaValorar.size(); i++) {
-					if (consultaValorar.get(i).getNickAutor() != usuarioLogeado) {
-						System.out.println("Título: " + consultaValorar.get(i).getTitulo() + "\nPuntuación: "
-								+ consultaValorar.get(i).getPuntuacion() + "\nComentario:" + consultaValorar.get(i).getComentario()
-								+ "\n Autor: " + consultaValorar.get(i).getAutor());
-					}
+				try {
+					consultaValorar = gestorCriticas.getCriticas();
+				} catch (Exception e) {
+					System.err.print("Error, no existe ninguna crítica en el sistema\n\n");
+					
+					systemPause();
+					break;
 				}
-				System.out.println("Introduzca el título de la obra a valorar\n");
+				
+				System.out.println("las obras disponibles para valorar son:\n");
+				// Le mostramos todas las críticas que no son suyas para que elija cual valorar
+				
+				// Compruebo si existe al menos una crítica que no haya creado él para valorar
+				int contador = 0;
+				
+				for (int i = 0; i < consultaValorar.size(); i++) {
+					if (!usuarioLogeado.equalsIgnoreCase(consultaValorar.get(i).getNickAutor()))
+						contador++;
+				}
+				
+				if(contador == 0) {
+					System.err.print("No existe ninguna crítica a valorar\n\n");
+					
+					systemPause();
+					break;
+				}
+				
+				for (int i = 0; i < consultaValorar.size(); i++) {
+					if (!usuarioLogeado.equalsIgnoreCase(consultaValorar.get(i).getNickAutor()))
+						System.out.print("Crítica[" + (i + 1) + "]\n" + "Título: " + consultaValorar.get(i).getTitulo()
+								+ "\nPuntuación: " + consultaValorar.get(i).getPuntuacion() + "\nComentario: "
+								+ consultaValorar.get(i).getComentario() + "\nAutor: " + consultaValorar.get(i).getNickAutor() + "\n");
+				}
+				
+				System.out.print("\n");
+				systemPause();
+				
+				System.out.print("Introduzca el título de la obra a valorar: ");
 				tituloAValorar = input.nextLine();
-				System.out.println("Introduzca la valoracion (flotante del 1 al 10\n");
-				valoracion = input.nextFloat();
-				gestorCriticas.votarCritica(usuarioLogeado, tituloAValorar, valoracion);
-				System.out.println("Hecho!\n");
+				System.out.print("\n");
+				System.out.print("Introduzca la valoracion (flotante del 1 al 10): ");
+				try {
+					valoracion = input.nextFloat();
+					input.nextLine();
+					
+				} catch (Exception e) {
+					System.err.print("El formato de la valoración debe ser un flotante");
+					
+					systemPause();
+					break;
+				}
+				
+				System.out.print("Introduzca el autor de la crítica: ");
+				autorAValorar = input.nextLine();
+				System.out.print("\n\n");
+				
+				try {
+					gestorCriticas.votarCritica(autorAValorar, tituloAValorar, valoracion);
+				} catch (Exception e) {
+					System.err.print("La crítica introducida no existe\n\n");
+					
+					systemPause();
+					break;
+				}
+				
+				System.out.print("La crítica introducida ha sido eliminada correctamente\n\n");
+				
+				systemPause();
 				break;
 
 			case 5:
-					String nickABuscar;
-				System.out.println("Introduzca el título de la obra a valorar\n");
-				nickABuscar = input.nextLine();
-				if (!gestorCriticas.existeNick(nickABuscar)) {
-					throw new Exception("El usuario no existe en el sistema\n");
-				}
-				ArrayList<Critica> consultaUsuario = new ArrayList<Critica>();
-				consulta = gestorCriticas.getCriticasUsuario(nickABuscar);
-				for (int i = 0; i < consultaUsuario.size(); i++) {
-					System.out.println("Título: " + consultaUsuario.get(i).getTitulo() + "\nPuntuación: "
-							+ consultaUsuario.get(i).getPuntuacion() + "\nComentario:"
-							+ consulta.get(i).getComentario());
-				}
+				/*
+				 * String nickABuscar;
+				 * System.out.println("Introduzca el título de la obra a valorar\n");
+				 * nickABuscar = input.nextLine(); if (!gestorCriticas.existeNick(nickABuscar))
+				 * { throw new Exception("El usuario no existe en el sistema\n"); }
+				 * ArrayList<Critica> consultaUsuario = new ArrayList<Critica>(); consulta =
+				 * gestorCriticas.getCriticasUsuario(nickABuscar); for (int i = 0; i <
+				 * consultaUsuario.size(); i++) { System.out.println("Título: " +
+				 * consultaUsuario.get(i).getTitulo() + "\nPuntuación: " +
+				 * consultaUsuario.get(i).getPuntuacion() + "\nComentario:" +
+				 * consulta.get(i).getComentario()); }
+				 */
 				break;
 
 			case 6:
@@ -249,6 +365,7 @@ public class Main {
 
 		} catch (Exception error) {
 			System.err.print("Error al limpiar el terminal\n");
+			error.printStackTrace();
 
 		}
 	}
@@ -259,7 +376,7 @@ public class Main {
 	 * @author Ricardo Espantaleón Pérez
 	 */
 	public static void systemPause() {
-		System.out.println("Presiona cualquier tecla para continuar...\n\n");
+		System.out.println("Presiona \'ENTER\' para continuar...\n\n");
 		input.nextLine();
 	}
 
