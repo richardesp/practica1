@@ -142,23 +142,82 @@ public class Main {
 
 			switch (ans) {
 			case 1:
-
+				String titulo, comentario;
+				float puntuacion;
+				System.out.println("Introduzca el título de la obra a criticar\n");
+				titulo = input.nextLine();
+				System.out.print("\n");
+				System.out.println("Introduzca la valoracion (flotante del 1 al 10\n");
+				puntuacion = input.nextFloat();
+				input.nextLine();
+				// Me aseguro de que el valor sea válido
+				if (puntuacion > 10) {
+					puntuacion = 10;
+				} else if (puntuacion < 0) {
+					puntuacion = 0;
+				}
+				System.out.print("\n");
+				System.out.println("Introduzca el comentario\n");
+				comentario = input.nextLine();
+				Critica criticaCreada = new Critica(titulo, puntuacion, comentario,
+						gestorCriticas.getUsuario(usuarioLogeado));
+				gestorCriticas.crearCritica(criticaCreada);
 				break;
 
 			case 2:
-
+				ArrayList<Critica> consulta = new ArrayList<Critica>();
+				consulta = gestorCriticas.getCriticas();
+				for (int i = 0; i < consulta.size(); i++) {
+					System.out.println("Título: " + consulta.get(i).getTitulo() + "\nPuntuación: "
+							+ consulta.get(i).getPuntuacion() + "\nComentario:" + consulta.get(i).getComentario()
+							+ "\n Autor: " + consulta.get(i).getAutor());
+				}
 				break;
 
 			case 3:
-
+				String tituloABorrar;
+				System.out.println("Introduzca el título de la obra a borrar\n");
+				tituloABorrar = input.nextLine();
+				System.out.print("\n");
+				gestorCriticas.borrarCritica(usuarioLogeado, tituloABorrar);
 				break;
 
 			case 4:
-
+				String tituloAValorar;
+				float valoracion;
+				System.out.println("las obras disponibles para valorar son:\n");
+				//Le mostramos todas las críticas que no son suyas para que elija cual valorar
+				ArrayList<Critica> consultaValorar = new ArrayList<Critica>();
+				consultaValorar = gestorCriticas.getCriticas();
+				for (int i = 0; i < consultaValorar.size(); i++) {
+					if (consultaValorar.get(i).getNickAutor() != usuarioLogeado) {
+						System.out.println("Título: " + consultaValorar.get(i).getTitulo() + "\nPuntuación: "
+								+ consultaValorar.get(i).getPuntuacion() + "\nComentario:" + consultaValorar.get(i).getComentario()
+								+ "\n Autor: " + consultaValorar.get(i).getAutor());
+					}
+				}
+				System.out.println("Introduzca el título de la obra a valorar\n");
+				tituloAValorar = input.nextLine();
+				System.out.println("Introduzca la valoracion (flotante del 1 al 10\n");
+				valoracion = input.nextFloat();
+				gestorCriticas.votarCritica(usuarioLogeado, tituloAValorar, valoracion);
+				System.out.println("Hecho!\n");
 				break;
 
 			case 5:
-
+					String nickABuscar;
+				System.out.println("Introduzca el título de la obra a valorar\n");
+				nickABuscar = input.nextLine();
+				if (!gestorCriticas.existeNick(nickABuscar)) {
+					throw new Exception("El usuario no existe en el sistema\n");
+				}
+				ArrayList<Critica> consultaUsuario = new ArrayList<Critica>();
+				consulta = gestorCriticas.getCriticasUsuario(nickABuscar);
+				for (int i = 0; i < consultaUsuario.size(); i++) {
+					System.out.println("Título: " + consultaUsuario.get(i).getTitulo() + "\nPuntuación: "
+							+ consultaUsuario.get(i).getPuntuacion() + "\nComentario:"
+							+ consulta.get(i).getComentario());
+				}
 				break;
 
 			case 6:
