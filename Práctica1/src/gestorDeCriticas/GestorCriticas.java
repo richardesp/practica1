@@ -162,7 +162,7 @@ public class GestorCriticas {
 			throw new Exception("Usuario no existente en el sistema");
 		int indiceUsuario = -1;
 		for (int i = 0; i < usuarios.size(); i++) {
-			if (nick == usuarios.get(i).getNick()) {
+			if (nick.equalsIgnoreCase(usuarios.get(i).getNick())) {
 				indiceUsuario = i;
 				break;
 			}
@@ -186,7 +186,7 @@ public class GestorCriticas {
 			throw new Exception("Usuario no existente en el sistema");
 		int indiceUsuario = -1;
 		for (int i = 0; i < usuarios.size(); i++) {
-			if (nick == usuarios.get(i).getNick()) {
+			if (nick.equalsIgnoreCase(usuarios.get(i).getNick())) {
 				indiceUsuario = i;
 			}
 		}
@@ -303,7 +303,7 @@ public class GestorCriticas {
 	public ArrayList<Critica> getCriticasUsuario(String nick) {
 		ArrayList<Critica> criticasUsuario = new ArrayList<Critica>();
 		for (int i = 0; i < criticas.size(); i++) {
-			if (nick == criticas.get(i).getNickAutor()) {
+			if (nick.equalsIgnoreCase(criticas.get(i).getNickAutor())) {
 				criticasUsuario.add(criticas.get(i));
 			}
 
