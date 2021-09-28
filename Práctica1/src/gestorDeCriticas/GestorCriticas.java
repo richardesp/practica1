@@ -147,7 +147,7 @@ public class GestorCriticas {
 		usuarios.remove(espectador);
 	}
 
-	/**
+		/**
 	 * La función cambia el nombre y apellidos a un usuario
 	 * 
 	 * @param nombreApellidos el nombre nuevo que se quiere cambiar
@@ -208,6 +208,7 @@ public class GestorCriticas {
 	 * La función añade una crítica nueva al vector
 	 * 
 	 * @param critica la crítica ya inicializada
+	 * @exception Se lanza si la crítica ya existe
 	 * @return
 	 * @author Nicolás López
 	 * 
@@ -224,6 +225,7 @@ public class GestorCriticas {
 	 * @param espectador el espectador al que pertenece la crítica
 	 * @param titulo     el titulo de la crítica
 	 * @return
+	 * @exception Salta si no existe una crítica de ese espectador con ese título
 	 * @author Nicolás López
 	 */
 	public void borrarCritica(String nick, String titulo) throws Exception {
@@ -244,6 +246,7 @@ public class GestorCriticas {
 	 * Devuelve todas las críticas del gestor
 	 *
 	 * 
+	 * @exception Se lanza si la lista de críticas está vacía
 	 * @author Nicolás López
 	 * @return un vector con las críticas
 	 */
@@ -273,9 +276,11 @@ public class GestorCriticas {
 	 * @param nick       Autor de la crítica
 	 * @param titulo     Título a la que va diriga la crítica
 	 * @param valoracion valor de la nota
+	 * @exception Se lanza si no existe el nick inicializado
+	 * @exception Se lanza si las valoraciones no están en rangos del 0 al 10
 	 * @return
 	 * @author Ricardo Espantaleón
-	 * 
+	 * @author Nicolás López
 	 */
 	public void votarCritica(String nick, String titulo, float valoracion) throws Exception {
 		if (!existeNick(nick))
@@ -310,6 +315,7 @@ public class GestorCriticas {
 		}
 		return criticasUsuario;
 	}
+
 
 	/**
 	 * Función que devuelve la lista de todos los usuarios registrados en el sistema
