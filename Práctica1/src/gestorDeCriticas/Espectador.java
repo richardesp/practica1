@@ -115,7 +115,10 @@ public class Espectador {
 	 * @author Enrique Estévez Mayoral
 	 * @author Ricardo Espantaleón Pérez
 	 */
-	public void setEmail(String email) {
+	public void setEmail(String email) throws Exception {
+		if (!validarEmail(email))
+			throw new Exception("El formato del email es incorrecto");
+
 		this.email = email;
 	}
 
