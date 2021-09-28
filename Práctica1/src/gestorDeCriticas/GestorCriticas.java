@@ -147,7 +147,7 @@ public class GestorCriticas {
 		usuarios.remove(espectador);
 	}
 
-		/**
+	/**
 	 * La función cambia el nombre y apellidos a un usuario
 	 * 
 	 * @param nombreApellidos el nombre nuevo que se quiere cambiar
@@ -184,17 +184,34 @@ public class GestorCriticas {
 	public void actualizarEmailUsuario(String nick, String email) throws Exception {
 		if (!existeNick(nick))
 			throw new Exception("Usuario no existente en el sistema");
+
 		int indiceUsuario = -1;
 		for (int i = 0; i < usuarios.size(); i++) {
 			if (nick.equalsIgnoreCase(usuarios.get(i).getNick())) {
 				indiceUsuario = i;
 			}
 		}
-		usuarios.get(indiceUsuario).setEmail(email);
+		try {
+			usuarios.get(indiceUsuario).setEmail(email);
+		} catch (Exception error) {
+			throw new Exception("El formato del email es incorrecto");
+		}
 	}
 
+	/**
+	 * Función que comprueba si un usuario ha creado una crítica
+	 * 
+	 * @param critica Crítica a comprobar si ha sido creada previamente en el
+	 *                sistema por parte de un usuario
+	 * @return Verdadero si el usuario ya ha creado dicha crítica y falso en caso
+	 *         contrario
+	 * @author Ricardo Espantaleón
+	 */
 	private boolean criticaCreada(Critica critica) {
 		ArrayList<Critica> criticasUsuario = getCriticasUsuario(critica.getAutor().getNick());
+
+		if (criticasUsuario.isEmpty())
+			return false;
 
 		for (int i = 0; i < criticasUsuario.size(); ++i) {
 			if (criticasUsuario.get(i).getTitulo().equalsIgnoreCase(critica.getTitulo()))
@@ -291,7 +308,8 @@ public class GestorCriticas {
 
 		int indiceCritica = -1;
 		for (int i = 0; i < criticas.size(); i++) {
-			if (nick.equalsIgnoreCase(criticas.get(i).getNickAutor()) && titulo.equalsIgnoreCase(criticas.get(i).getTitulo())) {
+			if (nick.equalsIgnoreCase(criticas.get(i).getNickAutor())
+					&& titulo.equalsIgnoreCase(criticas.get(i).getTitulo())) {
 				indiceCritica = i;
 			}
 		}
@@ -307,15 +325,16 @@ public class GestorCriticas {
 	 */
 	public ArrayList<Critica> getCriticasUsuario(String nick) {
 		ArrayList<Critica> criticasUsuario = new ArrayList<Critica>();
+
 		for (int i = 0; i < criticas.size(); i++) {
 			if (nick.equalsIgnoreCase(criticas.get(i).getNickAutor())) {
 				criticasUsuario.add(criticas.get(i));
 			}
 
 		}
+
 		return criticasUsuario;
 	}
-
 
 	/**
 	 * Función que devuelve la lista de todos los usuarios registrados en el sistema
