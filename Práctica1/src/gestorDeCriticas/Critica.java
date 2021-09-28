@@ -176,5 +176,24 @@ public class Critica {
 		valoracion.add(valoracionCritica);
 
 	}
+	
+	
+	/**
+	 * Realiza la media de todas las valoraciones
+	 * 
+	 * @return un float con la media
+	 * @throws Exception Se lanza si no hay valoraciones a una obra
+	 */
+	public float hacerMediaValoracion() throws Exception{
+		if(valoracion.isEmpty()) 
+			throw new Exception("No hay valoraciones de esta obra");
+		float suma=0;
+		for(int i=0; i<valoracion.size();i++) {
+			suma+=valoracion.get(i);
+		}
+	float retorno=suma/valoracion.size();
+	return retorno;
+	}
+
 
 }
