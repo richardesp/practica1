@@ -4,13 +4,20 @@
 package gestorDeCriticas;
 
 import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
 /**
- * Singleton !!!
+ * Clase con patrón de diseño Singleton dedicada a la gestión del sistema
  * 
  * @author Ricardo Espantaleón Pérez
  * @author Nicolás López Delgado
- *
+ * @see Documentación.pdf
  */
 public class GestorCriticas {
 
@@ -24,6 +31,9 @@ public class GestorCriticas {
 	// correspondiente autor en el vector de usuarios
 	// sino lanzo excepción
 	private ArrayList<Critica> criticas;
+	// Fichero de propiedades el cual va a almacenar la dirección de los usuarios o
+	// las criticas
+	static final Properties ficheroPropiedades = new Properties();
 
 	// Métodos
 
@@ -33,20 +43,63 @@ public class GestorCriticas {
 	 * @return Devuelve la instancia de la clase
 	 * @author Ricardo Espantaleón Pérez
 	 */
-	public static GestorCriticas getInstance() {
+	public static GestorCriticas getInstance(String rutaDatosUsuarios, String rutaDatosCriticas)
+			throws FileNotFoundException, Exception {
+		try {
+			exportarFicheroPropiedades(rutaDatosUsuarios, rutaDatosCriticas);
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException("La ruta indicada no ha sido encontrada");
+
+		} catch (Exception e) {
+			throw new Exception("Error al exportar el fichero de propiedades");
+		}
+
 		if (instance == null)
 			instance = new GestorCriticas();
+
 		return instance;
 	}
 
 	/**
-	 * Constructor sin parámetros
+	 * Función que devuelve la única instancia posible (singleton) de la clase
+	 * 
+	 * @return La instancia de la clase gestor
+	 */
+	public static GestorCriticas getInstance() throws IOException, FileNotFoundException {
+		if (instance == null)
+			try {
+				instance = new GestorCriticas();
+			} catch (IOException e) {
+				throw new IOException("Error al importar el fichero de propiedades");
+			}
+
+		return instance;
+	}
+
+	/**
+	 * Constructor sin parámetros el cual lee el fichero de propiedades del programa
+	 * para determinar la ruta de los datos de los usuarios y de las críticas del
+	 * sistema
 	 * 
 	 * @author Ricardo Espantaleón Pérez
 	 */
-	private GestorCriticas() {
+	private GestorCriticas() throws IOException, FileNotFoundException {
 		this.usuarios = new ArrayList<Espectador>();
 		this.criticas = new ArrayList<Critica>();
+
+		try {
+			importarFicheroPropiedades();
+		} catch (IOException e) {
+			throw new IOException("Error al importar el fichero de propiedades");
+
+		}
+
+		String rutaUsuarios = ficheroPropiedades.getProperty("rutaDatosUsuarios");
+		String rutaCriticas = ficheroPropiedades.getProperty("rutaDatosCriticas");
+
+		leerFicherosCriticas(rutaCriticas);
+		leerFicheroUsuarios(rutaUsuarios);
+
 	}
 
 	/**
@@ -119,8 +172,8 @@ public class GestorCriticas {
 	 * @param espectador
 	 * @return Devuelve true si el usuario ha podido crearse, en caso de que ya
 	 *         exista con dicho nick devolverá false
-	 * @exception Lanza una excepción en caso de que ya exista el usuario en el
-	 *                  sistema
+	 * @throws Exception Lanza una excepción en caso de que ya exista el usuario en
+	 *                   el sistema
 	 * @author Ricardo Espantaleón Pérez
 	 */
 	public void crearUsuario(Espectador espectador) throws Exception {
@@ -134,8 +187,8 @@ public class GestorCriticas {
 	 * Función que elimina un usuario (retorna falso si no existe y true en caso
 	 * contrario)
 	 * 
-	 * @exception Lanza una excepción en caso de que no exista el usuario en el
-	 *                  sistema
+	 * @throws Exception Lanza una excepción en caso de que no exista el usuario en
+	 *                   el sistema
 	 * @param nick
 	 * @return
 	 * @author Ricardo Espantaleón Pérez
@@ -349,6 +402,61 @@ public class GestorCriticas {
 			throw new Exception("Lista de usuarios vacía");
 
 		return usuarios;
+	}
+
+	/**
+	 * Función que exporta al fichero de propiedades las rutas de los ficheros que
+	 * contienen tanto los usuarios como las críticas del gestor
+	 * 
+	 * @param rutaDatosUsuarios Ruta virtual del fichero de usuarios
+	 * @param rutaDatosCriticas Ruta virtual del fichero de críticas
+	 * @throws Exception             Lanzará una excepción genérica en caso de no
+	 *                               exportar el fichero de propiedades
+	 * @throws FileNotFoundException Lanzará una excepción en caso de no encontrar
+	 *                               la ruta indicada
+	 */
+	static public void exportarFicheroPropiedades(String rutaDatosUsuarios, String rutaDatosCriticas)
+			throws Exception, FileNotFoundException {
+		ficheroPropiedades.setProperty("rutaDatosUsuarios", rutaDatosUsuarios);
+		ficheroPropiedades.setProperty("rutaDatosCriticas", rutaDatosCriticas);
+
+		try (final OutputStream outputstream = new FileOutputStream("./config/gestorCriticas.properties");) {
+			ficheroPropiedades.store(outputstream, "Archivo actualizado");
+			outputstream.close();
+		} catch (FileNotFoundException error) {
+			throw new Exception("Error, el fichero de propiedades no ha sido encontrado");
+		} catch (Exception error) {
+			throw new Exception("Error, al exportar el fichero de propiedades");
+		}
+
+	}
+
+	/**
+	 * Función que importa el fichero de propiedades al gestor
+	 * 
+	 * @throws IOException Lanzará la excepción en caso de que no se haya podido
+	 *                     importar
+	 */
+	static public void importarFicheroPropiedades() throws IOException {
+		InputStream entrada = null;
+
+		try {
+			entrada = new FileInputStream("./config/gestorCriticas.properties");
+
+			ficheroPropiedades.load(entrada);
+
+		} catch (IOException error) {
+			throw new IOException("Error al importar el fichero de propiedades");
+
+		}
+	}
+
+	private void leerFicheroUsuarios(String ruta) {
+		// TODO
+	}
+
+	private void leerFicherosCriticas(String ruta) {
+		// TODO
 	}
 
 }
