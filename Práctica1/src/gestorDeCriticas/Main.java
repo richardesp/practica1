@@ -1,5 +1,8 @@
 package gestorDeCriticas;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
  * @author ricardo Espectador, Espectaculo, gestorDeCriticas (singleton)
  * 
@@ -14,7 +17,7 @@ public class Main {
 
 	static private String usuarioLogeado = null;
 
-	static GestorCriticas gestorCriticas = GestorCriticas.getInstance();
+	static GestorCriticas gestorCriticas = null;
 
 	/**
 	 * Función main del gestor de Críticas. Será el menú principal que gestionara la
@@ -24,6 +27,32 @@ public class Main {
 	 * @author Ricardo Espantaleón
 	 */
 	public static void main(String[] args) {
+		
+		// Primero exportamos al fichero de propiedades las rutas virtuales donde voy a almacenar mis ficheros
+		try {
+			GestorCriticas.exportarFicheroPropiedades("./data/datosUsuarios.txt", "./data/datosCriticas.txt");
+		} catch (FileNotFoundException error) {
+			System.err.print("La ruta indicada del fichero de propiedades no ha sido encontrada\n\n");
+			
+			systemPause();
+			System.exit(1);
+
+		} catch (Exception error) {
+			System.err.print("Error al exportar el fichero de propiedades\n\n");
+
+			systemPause();
+			System.exit(1);
+		}
+		
+		try {
+			gestorCriticas = GestorCriticas.getInstance();
+		} catch (IOException error) {
+			System.err.print("Error al importar el fichero de propiedades\n\n");
+			
+			systemPause();
+			System.exit(1);
+		}
+		
 		int ans = 0;
 
 		while (true) {
