@@ -578,5 +578,6 @@ public class GestorCriticas {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "error escribiendo archivo" + e);
 		}
+	}
 	
 }
