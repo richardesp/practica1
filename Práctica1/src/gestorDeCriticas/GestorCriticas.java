@@ -527,4 +527,56 @@ public class GestorCriticas {
 	}
 
 }
+	/**
+	 * Escribe un fichero con las criticas en un formato específico
+	 * @param ruta la ruta de un fichero
+	 * @exception Se lanza cuando la ruta no corresponde a un fichero
+	 * @return
+	 * @author Nicolás López
+	 */
+	private void EscribirFicheroCriticas(String ruta) {
+		File archivo;
+		FileWriter fw;
+		BufferedWriter bw;
+
+		try {
+			archivo = new File(ruta);
+			fw = new FileWriter(archivo);
+			bw = new BufferedWriter(fw);
+			fw.write(criticas.get(0).getTitulo()+","+criticas.get(0).getPuntuacion()+","+criticas.get(0).getComentario()+","+0+","+criticas.get(0).hacerMediaValoracion());
+			for(int i=1;i<criticas.size();i++) {
+				fw.write("\n"+criticas.get(i).getTitulo()+","+criticas.get(i).getPuntuacion()+","+criticas.get(i).getComentario()+","+i+","+criticas.get(i).hacerMediaValoracion());
+			}
+			fw.close();
+			bw.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "error escribiendo archivo" + e);
+		}
+	}
+	/**
+	 * Lee un fichero con las criticas en un formato específico
+	 * @param ruta la ruta de un fichero
+	 * @exception Se lanza cuando la ruta no corresponde a un fichero
+	 * @return
+	 * @author Nicolás López
+	 */
+	private void EscribirFicheroUsuarios(String ruta) {
+		File archivo;
+		FileWriter fw;
+		BufferedWriter bw;
+
+		try {
+			archivo = new File(ruta);
+			fw = new FileWriter(archivo);
+			bw = new BufferedWriter(fw);
+			fw.write(usuarios.get(0).getNick()+","+usuarios.get(0).getNombreApellidos()+","+usuarios.get(0).getEmail());
+			for(int i=1;i<criticas.size();i++) {
+				fw.write("\n"+usuarios.get(i).getNick()+","+usuarios.get(i).getNombreApellidos()+","+usuarios.get(i).getEmail());
+			}
+			fw.close();
+			bw.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "error escribiendo archivo" + e);
+		}
+	
 }
