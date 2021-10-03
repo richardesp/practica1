@@ -474,7 +474,7 @@ public class GestorCriticas {
 			while ((linea = br.readLine()) != null) {
 				int index1 = linea.indexOf(",");
 				int indexFinal = linea.lastIndexOf(",");
-				String nick = linea.substring(0, index1 + 1);
+				String nick = linea.substring(0, index1);
 				String nombre = linea.substring(index1 + 1, indexFinal);
 				String email = linea.substring(indexFinal + 1);
 				Espectador e = new Espectador(nick, nombre, email);
