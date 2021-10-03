@@ -502,8 +502,7 @@ public class GestorCriticas {
 		BufferedReader br;
 
 		try {
-			String path = "/home/nicklodel/Escritorio/PW/practica1-main(1)/practica1-main/Práctica1/src/gestorDeCriticas/criticas.txt";
-			archivo = new File(path);
+			archivo = new File(ruta);
 			fr = new FileReader(archivo);
 			br = new BufferedReader(fr);
 			String linea;
