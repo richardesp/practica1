@@ -450,13 +450,82 @@ public class GestorCriticas {
 
 		}
 	}
-
+	}
+	
+	/**
+	 * Lee un fichero con los usuarios en un formato específico
+	 * @param ruta la ruta del archivo
+	 * @exception Se lanza si no se encuentra fichero
+	 * @return 
+	 * @author Nicolás López
+	 */
+	
 	private void leerFicheroUsuarios(String ruta) {
 		// TODO
-	}
+		File archivo;
+		FileReader fr;
+		BufferedReader br;
 
+		try {
+			archivo = new File(ruta);
+			fr = new FileReader(archivo);
+			br = new BufferedReader(fr);
+			String linea;
+			while ((linea = br.readLine()) != null) {
+				int index1 = linea.indexOf(",");
+				int indexFinal = linea.lastIndexOf(",");
+				String nick = linea.substring(0, index1 + 1);
+				String nombre = linea.substring(index1 + 1, indexFinal);
+				String email = linea.substring(indexFinal + 1);
+				Espectador e = new Espectador(nick, nombre, email);
+				usuarios.add(e);
+			}
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "error leyendo archivo" + e);
+		}
+	}
+	
+	/**
+	 * Lee un fichero con las criticas en un formato específico
+	 * @param ruta la ruta de un fichero
+	 * @exception Se lanza cuando la ruta no corresponde a un fichero
+	 * @return
+	 * @author Nicolás López
+	 */
+	
 	private void leerFicherosCriticas(String ruta) {
 		// TODO
+		File archivo;
+		FileReader fr;
+		BufferedReader br;
+
+		try {
+			String path = "/home/nicklodel/Escritorio/PW/practica1-main(1)/practica1-main/Práctica1/src/gestorDeCriticas/criticas.txt";
+			archivo = new File(path);
+			fr = new FileReader(archivo);
+			br = new BufferedReader(fr);
+			String linea;
+			while ((linea = br.readLine()) != null) {
+				int index1 = linea.indexOf(",");
+				int index2 = linea.indexOf(",", index1 + 1);
+				int index3 = linea.indexOf(",", index2 + 1);
+				int indexFinal = linea.lastIndexOf(",");
+				String titulo = linea.substring(0, index1);
+				int puntuacion = Integer.parseInt(linea.substring(index1 + 1, index2));
+				String comentario = linea.substring(index2 + 1, index3);
+				int indice = Integer.parseInt(linea.substring(index3 + 1, indexFinal));
+				float valoracion = Float.parseFloat(linea.substring(indexFinal + 1));
+			Critica c= new Critica(titulo,puntuacion,comentario,usuarios.get(indice));
+			criticas.add(c);
+			}
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "error leyendo archivo" + e);
+		
 	}
 
+}
 }
