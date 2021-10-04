@@ -1,4 +1,0 @@
-dalas,4,gei,0,0.0
-thegrefg,3,180km,1,5.0
-Titanic,10,Buenisima pelicula,2,7.5
-Tron,10,buena,3,0.0
