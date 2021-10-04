@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"gestorDeCriticas","l":"Critica"},{"p":"gestorDeCriticas","l":"Espectador"},{"p":"gestorDeCriticas","l":"GestorCriticas"},{"p":"main","l":"Main"}];updateSearchResults();

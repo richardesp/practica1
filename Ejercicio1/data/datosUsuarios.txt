@@ -1,0 +1,5 @@
+nicklodel,Nicolás López,nicolasjlopezdelgado@gmail.com
+ricardo,richard,rc@gc.com
+john767,John Doe,john67@gmail.com
+rick,rick,rick@m.com
+enrique2001,Enrique Estevez,enrique@gmail.com
