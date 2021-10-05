@@ -90,7 +90,7 @@ public class GestorDeEspectaculos {
 	 * 
 	 * @author Ricardo Espantaleón Pérez
 	 */
-	private GestorDeEspectaculos() throws IOException, FileNotFoundException {
+	public GestorDeEspectaculos() throws IOException, FileNotFoundException {
 		this.usuarios = new ArrayList<Espectador>();
 		this.criticas = new ArrayList<Critica>();
 		this.espectaculos = new ArrayList<Espectaculo>();
@@ -280,21 +280,6 @@ public class GestorDeEspectaculos {
 		}
 
 		return false;
-	}
-
-	/**
-	 * La función añade una crítica nueva al vector
-	 * 
-	 * @param critica la crítica ya inicializada
-	 * @exception Se lanza si la crítica ya existe
-	 * @return
-	 * @author Nicolás López
-	 * 
-	 */
-	public void crearCritica(Critica critica) throws Exception {
-		if (criticaCreada(critica))
-			throw new Exception("Crítica ya existente en el sistema");
-		criticas.add(critica);
 	}
 
 	/**
@@ -649,17 +634,6 @@ public class GestorDeEspectaculos {
 
 		}
 		return listaRetorno;
-	}
-
-	/**
-	 * Función que filtra espectáculos por su categoría
-	 * 
-	 * @param categoria la categoria del espectáculo
-	 * @return un espectaculo
-	 * @author Nicolás López
-	 */
-	public ArrayList<Espectaculo> getEspectaculosCategoria(String categoria) {
-		return null;
 	}
 
 	/**
@@ -1025,6 +999,117 @@ public class GestorDeEspectaculos {
 		}
 
 		return criticasEspectaculo;
+	}
+
+	/* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+	 * 
+	 * FUNCIONES A REALIZAR DEL MENÚ MAIN PARA QUE FUNCIONE EL PROGRAMA, LO DEMÁS
+	 * SERÁ OBSOLETO
+	 * 
+	 * |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+	 */
+
+	/**
+	 * Función que se encarga de guardar todos los datos pertinentes de los vectores
+	 * en los ficheros
+	 * 
+	 * @throws Exception Lanzará una excepción en caso de que suceda cualquier error
+	 */
+	public void guardarFicheros() throws Exception {
+
+	}
+
+	/**
+	 * Función que se encarga de comprobar si la password que está almacenada en el
+	 * fichero de propiedades coincide con la password introducida
+	 * 
+	 * @implNote Es recomendable crear una variable password en el gestor, la cual
+	 *           se inicialize una vez el constructor lea el fichero de propiedades
+	 *           para no tener que complicarse con la password
+	 * 
+	 * @param password Contraseña a comprobar si coincide con la de administración
+	 * @return
+	 */
+	public boolean passwordCorrecta(String password) {
+
+		return false;
+	}
+	
+	// Revisar la clase Critica, la cual recibe un espectaculo como variable, no es eficiente, mejor asignar la variable titulo a espectaculo.titulo
+	
+	/**
+	 * La función añade una crítica nueva al vector
+	 * 
+	 * @param critica la crítica ya inicializada
+	 * @exception Se lanza si la crítica ya existe o si el espectáculo asociado todavía no se ha celebrado
+	 * @return
+	 * @author Nicolás López
+	 * 
+	 */
+	public void crearCritica(Critica critica) throws Exception {
+		if (criticaCreada(critica))
+			throw new Exception("Crítica ya existente en el sistema");
+		
+		if(/*critica.fecha >= fechaActual*/)
+			// Por tanto no se ha celebrado
+		criticas.add(critica);
+	}
+	
+	// HACER LA FUNCIÓN ABSTRACTE GENÉRICA PARA LA PRIMERA OPCIÓN DEL MENU USUARIO ADMIN
+	
+	/**
+	 * La función devuelve el número de entradas de un espectáculo
+	 * 
+	 * @param titulo
+	 * @return el número de entradas de dicho espectáculo
+	 * @throws Exception Lanza una excepción si no encuentra el espectáculo
+	 */
+	public int getNumeroEntradas(String titulo) throws Exception {
+		
+		return 0;
+	}
+	
+	/**
+	 * La función devuelve el número de localidades de un espectáculo
+	 * 
+	 * @param titulo
+	 * @return el número de localidades de dicho espectáculo
+	 * @throws Exception Lanza una excepción si no encuentra el espectáculo
+	 */
+	public int getNumeroLocalidades(String titulo) throws Exception {
+		
+		return 0;
+	}
+	
+	/**
+	 * Función que me devuelve un próximo espectáculo
+	 * 
+	 * @param titulo
+	 * @return
+	 * @throws Exception Lanza excepción si no existe
+	 * @pre Debe tener una fecha superior a la actual
+	 * @pre Debe tener un número de entradas > 0
+	 */
+	public Espectaculo proximoEspectaculo(String titulo) throws Exception {
+		
+		return null;
+	}
+	
+	// MIRAR ESPECTACULO DONDE TENGO QUE HACER GETFECHATOSTRING
+	
+
+	/**
+	 * Función que filtra espectáculos por su categoría
+	 * 
+	 * @param categoria la categoria del espectáculo
+	 * @return un espectaculo
+	 * @author Nicolás López
+	 * @pre Que exista la categoría
+	 * @pre Que la fecha del espectaculo sea posterior a la actual
+	 * @pre Que debe tener un numero de entradas > 0
+	 */
+	public ArrayList<Espectaculo> getEspectaculosCategoria(String categoria) throws Exception {
+		return null;
 	}
 	
 	
