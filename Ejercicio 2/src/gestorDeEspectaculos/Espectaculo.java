@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class Espectaculo {
-	
+
 	String titulo;
 	String categorias;
 	String descripcion;
 	ArrayList<Sesion> sesiones;
-	
+
 	// Funciones Abstractas
-	public abstract Espectaculo crearEspectaculo(String titulo,String categorias,String descripcion ,ArrayList<Sesion> sesiones) throws Exception;
+	public abstract Espectaculo crearEspectaculo(String titulo, String categorias, String descripcion,
+			ArrayList<Sesion> sesiones) throws Exception;
 
 	/**
 	 * Función que devuelve el título del Espectáculo
@@ -97,13 +98,38 @@ public abstract class Espectaculo {
 	public void setSesiones(ArrayList<Sesion> sesiones) {
 		this.sesiones = sesiones;
 	}
-	
-	
+
+	/**
+	 * Función que elimina todas las sesiones asociadas al espectáculo
+	 * 
+	 * @author Ricardo Espantaleón
+	 */
+	public void eliminaSesiones() {
+		this.sesiones.clear();
+	}
+
+	/**
+	 * Función que elimina una sesión de un espectaculo
+	 * 
+	 * 
+	 * @param sesion Sesión a eliminar
+	 * 
+	 * @author Ricardo Espantaleón Pérez
+	 */
+	public void eliminaSesion(Sesion sesion) {
+		for (int i = 0; i < sesiones.size(); ++i) {
+			if (sesiones.get(i).equals(sesion)) {
+				sesiones.remove(i);
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Función que compara 2 fechas
 	 * 
 	 * @param fecha Fecha de la sesion que se quiere comprobar
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 * @author Enrique Estevez Mayoral
 	 */
@@ -120,4 +146,14 @@ public abstract class Espectaculo {
 		return true;
 	}
 	
+	/**
+	 * Función que comprueba que quedan entradas disponibles de un espectáculo
+	 * 
+	 * @return Devuelve verdadero en caso de que haya entradas disponibles de dicho espectaculo, falso en caso contrario
+	 */
+	public boolean entradasDisponibles() {
+		
+		return true;
+	}
+
 }
