@@ -720,9 +720,10 @@ public class GestorDeEspectaculos {
 	 * @param titulo el titulo del espectaculo
 	 * @param fecha la fecha del espectaculo
 	 * @param espectador el espectador que compra la entrada
+	 * @para indice del espectador que compra la entrada
 	 * @author Nicolás López
 	 */
-	public void venderEntradas(String titulo, Date fecha, int indiceEspectador) throws Exception {
+	public void venderEntradas(String titulo, Date fecha, Espectador espectador) throws Exception {
 		int indiceEspectaculo,indiceSesion;
 		if (buscarEspectaculoTitulo(titulo) == -1)
 			throw new Exception("no hay espectáculos con ese título");
@@ -731,8 +732,9 @@ public class GestorDeEspectaculos {
 			throw new Exception ("No existe esa sesión");
 		indiceSesion=buscarFecha(indiceEspectaculo,fecha);
 		espectaculos.get(indiceEspectaculo).getSesiones().get(indiceSesion).setLocalidades(espectaculos.get(indiceEspectaculo).getSesiones().get(indiceSesion).getLocalidades()-1);
+		espectaculos.get(indiceEspectaculo).getSesiones().get(indiceSesion).entradaVendida();
 		Ticket ticket=new Ticket(espectaculos.get(indiceEspectaculo).getTitulo(),espectaculos.get(indiceEspectaculo).getDescripcion(),espectaculos.get(indiceEspectaculo).getCategorias(),fecha);
-		usuarios.get(indiceEspectador).asistirEspectaculo(ticket);
+		espectador.asistirEspectaculo(ticket);
 	}
 
 	/**
@@ -745,6 +747,20 @@ public class GestorDeEspectaculos {
 	public int buscarEspectaculoTitulo(String titulo) {
 		for (int i = 0; i < espectaculos.size(); i++) {
 			if (titulo.equalsIgnoreCase(espectaculos.get(i).getTitulo()))
+				return i;
+		}
+		return -1;
+	}
+	/**
+	 * Función que busca un espectaculo por su título
+	 * 
+	 * @param titulo el titulo del espectaculo
+	 * @return el indice del vector donde se encuentra o -1 si no se encuentra
+	 * @author Nicolás López
+	 */
+	public int buscarEspectaculoCategoria(String categorias) {
+		for (int i = 0; i < espectaculos.size(); i++) {
+			if (categorias.equalsIgnoreCase(espectaculos.get(i).getCategorias()))
 				return i;
 		}
 		return -1;
@@ -765,5 +781,13 @@ public class GestorDeEspectaculos {
 		}
 		return -1;
 		}
+	
+	
+	public int consultarEntradasVendidas(Sesion sesion) {
+		return sesion.getVendidas();
+	}
+
+}
+
 
 }
