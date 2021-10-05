@@ -10,7 +10,7 @@ public class EspectaculoPaseMultiple extends Espectaculo {
 	String titulo;
 	String categorias;
 	String descripcion;
-	Sesion sesion;
+	ArrayList<Sesion> sesiones;
 
 	// Métodos
 	/**
@@ -23,11 +23,11 @@ public class EspectaculoPaseMultiple extends Espectaculo {
 	 *                    de lasesion de un espectaculo
 	 * @author Enrique Estevez Mayoral
 	 */
-	public EspectaculoPaseMultiple(String titulo, String categorias, String descripcion, Sesion sesion) {
+	public EspectaculoPaseMultiple(String titulo, String categorias, String descripcion, ArrayList<Sesion> sesiones) {
 		this.titulo = titulo;
 		this.categorias = categorias;
 		this.descripcion = descripcion;
-		this.sesion = sesion;
+		this.sesiones = sesiones;
 	}
 
 	/**
@@ -66,8 +66,8 @@ public class EspectaculoPaseMultiple extends Espectaculo {
 	 * @return Las sesiones del espectáculo
 	 * @author Enrique Estevez Mayoral
 	 */
-	Sesion getSesiones() {
-		return sesion;
+	ArrayList<Sesion> getSesiones() {
+		return sesiones;
 	}
 
 	/**
@@ -110,8 +110,8 @@ public class EspectaculoPaseMultiple extends Espectaculo {
 	 * 
 	 * @author Enrique Estevez Mayoral
 	 */
-	public void setSesiones(Sesion sesion) {
-		this.sesion = sesion;
+	public void setSesiones(ArrayList<Sesion> sesiones) {
+		this.sesiones = sesiones;
 	}
 	
 	/**
@@ -135,6 +135,18 @@ public class EspectaculoPaseMultiple extends Espectaculo {
 		return true;
 	}
 	
+	/**
+	 * Función que crea un espectáculo
+	 * 
+	 * @param titulo el titulo del espectaculo
+	 * @param categorias la categoria del espectáculo
+	 * @param descripcion descripcion del espectaculo
+	 * @param sesiones la lista de sesiones del espectaculo
+	 * @return un espectaculo
+	 * @throws Exception Se lanza cuando no tiene el número correcto de elementos
+	 * @author Enrique Estevez Mayoral
+	 */
+	
 	
 	@Override
 	public Espectaculo crearEspectaculo(String titulo, String categorias, String descripcion,
@@ -142,7 +154,7 @@ public class EspectaculoPaseMultiple extends Espectaculo {
 		if (sesiones.size() <= 1)
 			throw new Exception("El formato de las sesiones no es válido para el Espectáculo Pase Multiple\n\n");
 
-		EspectaculoPaseMultiple e = new EspectaculoPaseMultiple(titulo, categorias, descripcion, sesiones.get(0));
+		EspectaculoPaseMultiple e = new EspectaculoPaseMultiple(titulo, categorias, descripcion, sesiones);
 
 		return e;
 	}
