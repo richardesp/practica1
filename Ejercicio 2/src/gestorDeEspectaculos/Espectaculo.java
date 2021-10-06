@@ -11,17 +11,20 @@ public abstract class Espectaculo {
 	String descripcion;
 	ArrayList<Sesion> sesiones;
 
-	// Funciones Abstractas
-	public abstract Espectaculo crearEspectaculo(String titulo, String categorias, String descripcion,
-			ArrayList<Sesion> sesiones) throws Exception;
-
+	
+	Espectaculo(String titulo,String categoria,String descripcion){
+		this.titulo=titulo;
+		this.categorias=categoria;
+		this.descripcion=descripcion;
+	}
+	
 	/**
 	 * Función que devuelve el título del Espectáculo
 	 * 
 	 * @return El título del espectáculo
 	 * @author Enrique Estevez Mayoral
 	 */
-	String getTitulo() {
+	protected String getTitulo() {
 		return titulo;
 	}
 
@@ -31,7 +34,7 @@ public abstract class Espectaculo {
 	 * @return Las categorias del espectáculo
 	 * @author Enrique Estevez Mayoral
 	 */
-	String getCategorias() {
+	protected String getCategorias() {
 		return categorias;
 	}
 
@@ -41,7 +44,7 @@ public abstract class Espectaculo {
 	 * @return La descrpcion del espectáculo
 	 * @author Enrique Estevez Mayoral
 	 */
-	String getDescripcion() {
+	protected String getDescripcion() {
 		return descripcion;
 	}
 
@@ -51,7 +54,7 @@ public abstract class Espectaculo {
 	 * @return Las sesiones del espectáculo
 	 * @author Enrique Estevez Mayoral
 	 */
-	ArrayList<Sesion> getSesiones() {
+	protected ArrayList<Sesion> getSesiones() {
 		return sesiones;
 	}
 
@@ -74,7 +77,7 @@ public abstract class Espectaculo {
 	 * @param categorias Categoria a cambiar a la instancia
 	 * @author Enrique Estevez Mayoral
 	 */
-	public void setCategorias(String categorias) {
+	protected void setCategorias(String categorias) {
 		this.categorias = categorias;
 	}
 
@@ -85,7 +88,7 @@ public abstract class Espectaculo {
 	 * @param titulo Titulo a cambiar a la instancia
 	 * @author Enrique Estevez Mayoral
 	 */
-	public void setDescripcion(String descripcion) {
+	protected void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
@@ -95,7 +98,7 @@ public abstract class Espectaculo {
 	 * 
 	 * @author Enrique Estevez Mayoral
 	 */
-	public void setSesiones(ArrayList<Sesion> sesiones) {
+	protected void setSesiones(ArrayList<Sesion> sesiones) {
 		this.sesiones = sesiones;
 	}
 
@@ -116,7 +119,7 @@ public abstract class Espectaculo {
 	 * 
 	 * @author Ricardo Espantaleón Pérez
 	 */
-	public void eliminaSesion(Sesion sesion) {
+	protected void eliminaSesion(Sesion sesion) {
 		for (int i = 0; i < sesiones.size(); ++i) {
 			if (sesiones.get(i).equals(sesion)) {
 				sesiones.remove(i);
@@ -157,3 +160,4 @@ public abstract class Espectaculo {
 	}
 
 }
+
