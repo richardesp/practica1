@@ -10,7 +10,7 @@ public class EspectaculoPuntual extends Espectaculo {
 	String titulo;
 	String categorias;
 	String descripcion;
-	ArrayList<Sesion> sesiones;
+	Sesion sesion;
 
 	// Métodos
 
@@ -24,74 +24,19 @@ public class EspectaculoPuntual extends Espectaculo {
 	 *                    de lasesion de un espectaculo
 	 * @author Enrique Estevez Mayoral
 	 */
-	public EspectaculoPuntual(String titulo, String categorias, String descripcion, ArrayList<Sesion> sesiones) {
+	public EspectaculoPuntual(String titulo, String categorias, String descripcion, Sesion sesion) {
+		super (titulo,categorias,descripcion);
 		this.titulo = titulo;
 		this.categorias = categorias;
 		this.descripcion = descripcion;
-		this.sesiones = sesiones;
+		this.sesion = sesion;
 	}
-
-	/**
-	 * Función que devuelve el título del Espectáculo
-	 * 
-	 * @return El título del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	String getTitulo() {
-		return titulo;
+	public Sesion getSesion() {
+		return sesion;
 	}
-
-	/**
-	 * Función que devuelve la categoria del Espectáculo
-	 * 
-	 * @return Las categorias del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	String getCategorias() {
-		return categorias;
-	}
-
-	/**
-	 * Función que devuelve la descripción del Espectáculo
-	 * 
-	 * @return La descrpcion del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * Función que devuelve las sesiones del Espectaculo
-	 * 
-	 * @return Las sesiones del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	ArrayList<Sesion> getSesiones() {
-		return sesiones;
-	}
-
-	/**
-	 * Cambia el valor de la variable titulo por el valor pasado por argumento a la
-	 * función
-	 * 
-	 * @param titulo Titulo a cambiar a la instancia
-	 * @author Enrique Estevez Mayoral
-	 * 
-	 */
-	void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	/**
-	 * Cambia el valor de la variable categorias por el valor pasado por argumento a
-	 * la función
-	 * 
-	 * @param categorias Categoria a cambiar a la instancia
-	 * @author Enrique Estevez Mayoral
-	 */
-	public void setCategorias(String categorias) {
-		this.categorias = categorias;
+	
+}
+this.categorias = categorias;
 	}
 
 	/**
