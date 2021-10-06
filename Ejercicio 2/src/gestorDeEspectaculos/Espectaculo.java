@@ -109,7 +109,7 @@ public abstract class Espectaculo {
 
 		Date fechaActual = new Date();
 
-		if (fechaActual.compareTo(fechaEspectaculo) > 0)
+		if (fechaEspectaculo.compareTo(fechaActual) > 0)
 			return true;
 
 		return false;
