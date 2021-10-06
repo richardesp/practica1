@@ -107,17 +107,14 @@ public abstract class Espectaculo {
 	 * @throws Exception
 	 * @author Enrique Estevez Mayoral
 	 */
-	private boolean fechaMayorActual(Date fecha) throws Exception {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+	private boolean fechaMayorActual(Date fechaEspectaculo) throws Exception {
+		
+		Date fechaActual = new Date();
 
-		String fechaEspectaculo = formatter.format(fecha);
-		String fechaActual = formatter.format(date);
+		if (fechaActual.compareTo(fechaEspectaculo) > 0)
+			return true;
 
-		if (fechaEspectaculo.compareTo(fechaActual) > 0)
-			throw new Exception("La fecha del espectaculo es");
-
-		return true;
+		return false;
 	}
 	
 }
