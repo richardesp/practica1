@@ -103,12 +103,10 @@ public abstract class Espectaculo {
 	 * Función que compara 2 fechas
 	 * 
 	 * @param fecha Fecha de la sesion que se quiere comprobar
-	 * @return 
-	 * @throws Exception
 	 * @author Enrique Estevez Mayoral
 	 */
-	private boolean fechaMayorActual(Date fechaEspectaculo) throws Exception {
-		
+	private boolean fechaMayorActual(Date fechaEspectaculo) {
+
 		Date fechaActual = new Date();
 
 		if (fechaActual.compareTo(fechaEspectaculo) > 0)
