@@ -118,22 +118,17 @@ public class EspectaculoPuntual extends Espectaculo {
 	/**
 	 * Función que compara 2 fechas
 	 * 
-	 * @param fecha Fecha de la sesion que se quiere comprobar
-	 * @return 
-	 * @throws Exception
+	 * @param fechaEspectaculo Fecha de la sesion que se quiere comprobar
 	 * @author Enrique Estevez Mayoral
 	 */
-	private boolean fechaMayorActual(Date fecha) throws Exception {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+	private boolean fechaMayorActual(Date fechaEspectaculo) {
 
-		String fechaEspectaculo = formatter.format(fecha);
-		String fechaActual = formatter.format(date);
+		Date fechaActual = new Date();
 
-		if (fechaEspectaculo.compareTo(fechaActual) > 0)
-			throw new Exception("La fecha del espectaculo es");
+		if (fechaActual.compareTo(fechaEspectaculo) > 0)
+			return true;
 
-		return true;
+		return false;
 	}
 	
 	/**
