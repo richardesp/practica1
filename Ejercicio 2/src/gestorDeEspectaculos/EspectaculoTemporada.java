@@ -6,10 +6,6 @@ import java.util.Date;
 
 public class EspectaculoTemporada extends Espectaculo {
 
-	// Variables
-	String titulo;
-	String categorias;
-	String descripcion;
 	ArrayList<Sesion> sesiones;
 
 	// Métodos
@@ -24,139 +20,20 @@ public class EspectaculoTemporada extends Espectaculo {
 	 * @author Enrique Estevez Mayoral
 	 */
 	public EspectaculoTemporada(String titulo, String categorias, String descripcion, ArrayList<Sesion> sesiones) {
+		super (titulo,categorias,descripcion);
 		this.titulo = titulo;
 		this.categorias = categorias;
 		this.descripcion = descripcion;
 		this.sesiones = sesiones;
 	}
-
-	/**
-	 * Función que devuelve el título del Espectáculo
-	 * 
-	 * @return El título del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	String getTitulo() {
-		return titulo;
-	}
-
-	/**
-	 * Función que devuelve la categoria del Espectáculo
-	 * 
-	 * @return Las categorias del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	String getCategorias() {
-		return categorias;
-	}
-
-	/**
-	 * Función que devuelve la descripción del Espectáculo
-	 * 
-	 * @return La descrpcion del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * Función que devuelve las sesiones del Espectaculo
-	 * 
-	 * @return Las sesiones del espectáculo
-	 * @author Enrique Estevez Mayoral
-	 */
-	ArrayList<Sesion> getSesiones() {
+	
+	public ArrayList<Sesion> getSesiones(){
 		return sesiones;
 	}
-
-	/**
-	 * Cambia el valor de la variable titulo por el valor pasado por argumento a la
-	 * función
-	 * 
-	 * @param titulo Titulo a cambiar a la instancia
-	 * @author Enrique Estevez Mayoral
-	 * 
-	 */
-	void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	/**
-	 * Cambia el valor de la variable categorias por el valor pasado por argumento a
-	 * la función
-	 * 
-	 * @param categorias Categoria a cambiar a la instancia
-	 * @author Enrique Estevez Mayoral
-	 */
-	public void setCategorias(String categorias) {
-		this.categorias = categorias;
-	}
-
-	/**
-	 * Cambia el valor de la variable descripcion por el valor pasado por argumento
-	 * a la función
-	 * 
-	 * @param titulo Titulo a cambiar a la instancia
-	 * @author Enrique Estevez Mayoral
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	/**
-	 * Cambia el valor de la variable sesiones por el valor pasado por argumento a
-	 * la función
-	 * 
-	 * @author Enrique Estevez Mayoral
-	 */
-	public void setSesiones(ArrayList<Sesion> sesiones) {
-		this.sesiones = sesiones;
+	
+	public void CrearSesion(Date fecha,int localidades) {
+		sesiones.add(new Sesion(localidades,fecha));
 	}
 	
-	
-	/**
-	 * Función que compara 2 fechas
-	 * 
-	 * @param fecha Fecha de la sesion que se quiere comprobar
-	 * @return 
-	 * @throws Exception
-	 * @author Enrique Estevez Mayoral
-	 */
-	private boolean fechaMayorActual(Date fecha) throws Exception {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
-
-		String fechaEspectaculo = formatter.format(fecha);
-		String fechaActual = formatter.format(date);
-
-		if (fechaEspectaculo.compareTo(fechaActual) > 0)
-			throw new Exception("La fecha del espectaculo es");
-
-		return true;
-	}
-	
-	
-	/**
-	 * Función que crea un espectáculo
-	 * 
-	 * @param titulo el titulo del espectaculo
-	 * @param categorias la categoria del espectáculo
-	 * @param descripcion descripcion del espectaculo
-	 * @param sesiones la lista de sesiones del espectaculo
-	 * @return un espectaculo
-	 * @throws Exception Se lanza cuando no tiene el número correcto de elementos
-	 * @author Enrique Estevez Mayoral
-	 */
-	
-	public Espectaculo crearEspectaculo(String titulo, String categorias, String descripcion,
-			ArrayList<Sesion> sesiones) throws Exception {
-		if (sesiones.size() < 1)
-			throw new Exception("El formato de las sesiones no es válido para el Espectáculo puntual\n\n");
-
-		EspectaculoTemporada e = new EspectaculoTemporada(titulo, categorias, descripcion, sesiones);
-
-		return e;
-	}
-
 }
+
