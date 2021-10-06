@@ -102,7 +102,7 @@ public abstract class Espectaculo {
 	/**
 	 * Función que compara 2 fechas
 	 * 
-	 * @param fecha Fecha de la sesion que se quiere comprobar
+	 * @param fechaEspectaculo Fecha de la sesion que se quiere comprobar
 	 * @author Enrique Estevez Mayoral
 	 */
 	private boolean fechaMayorActual(Date fechaEspectaculo) {
