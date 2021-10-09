@@ -4,6 +4,8 @@
 package gestorDeEspectaculos;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Date;
@@ -227,7 +229,7 @@ public class Main {
 				try {
 					gestorEspectaculos.crearCritica(criticaCreada);
 				} catch (Exception e) {
-					System.err.print("Ya has creado una crítica sobre este Espectáculo\n\n");
+					System.err.print(e);
 
 					systemPause();
 					break;
@@ -467,7 +469,7 @@ public class Main {
 					gestorEspectaculos.guardarFicheros();
 				} catch (Exception error) {
 					System.err.print(error);
-					
+
 					systemPause();
 					System.exit(1);
 				}
@@ -489,201 +491,383 @@ public class Main {
 		int ans = 0;
 
 		String titulo, categoria, descripcion;
+		int tipoEspectaculo;
 		Date fecha;
 		int localidades;
-		
+
 		while (true) {
 			limpiarPantalla();
 
 			System.out.print("Bienvenido: $sudo\n\n");
-			System.out.print("[1] Dar de alta un espectáculo\n\n");
-			System.out.print("[2] Cancelar todas las sesiones de un espectáculo\n\n");
-			System.out.print("[3] Cancelar una sesión particular de un espectáculo\n\n");
-			System.out.print("[4] Actualizar datos de un espectáculo\n\n");
-			System.out.print("[5] Gestionar venta de entradas de un espectáculo\n\n");
+			System.out.print("[1] Dar de alta un espectáculo\n\n"); // Ok !
+			System.out.print("[2] Cancelar todas las sesiones de un espectáculo\n\n"); // Ok !
+			System.out.print("[3] Cancelar una sesión particular de un espectáculo\n\n"); // Ok !
+			System.out.print("[4] Actualizar datos de un espectáculo\n\n"); // Ok !
+			System.out.print("[5] Gestionar venta de entradas de un espectáculo\n\n"); // TODO
 			System.out.print("[6] Consultar localidades disponibles de un espectáculo (dada una fecha)\n\n");
-			System.out.print("[7] Filtrar un espectáculo por título\n\n");
-			System.out.print("[8] Filtrar espectáculos por categorías\n\n");
+			System.out.print("[7] Filtrar las sesiones de un espectáculo\n\n"); // Ok !
+			System.out.print("[8] Filtrar espectáculos por categorías\n\n"); // TODO
 			System.out.print("[9] Cerrar sesión\n\n");
-			System.out.print("[8] Cerrar programa\n\n");
-			
+			System.out.print("[10] Cerrar programa\n\n");
+
 			System.out.print("Introduzca una opción: ");
 			// Se guarda en el buffer un \n al ser un int
 			ans = input.nextInt();
 			input.nextLine();
 			System.out.print("\n");
-			
+
 			switch (ans) {
 			case 1:
 				System.out.print("Introduzca el título del espectáculo: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
-				
+
 				System.out.print("Introduzca la categoría del espectáculo: ");
 				categoria = input.nextLine();
 				System.out.print("\n");
-				
+
 				System.out.print("Introduzca la descripción del espectáculo: ");
 				descripcion = input.nextLine();
 				System.out.print("\n");
-				
-				// TODO
-				//crearEspectaculo(), debeis hacer la función abstracta genérica para el tipo de espectáculo en cuestión
 
-				break;
-			
+				System.out.print("Introduzca el número de localidades donde se va a realizar el espectáculo: ");
+				localidades = input.nextInt();
+				input.nextLine();
+				System.out.print("\n");
+
+				System.out.print(
+						"Introduzca el tipo de espectáculo que es: (1. Puntual, 2. Pase múltiple, 3. Pase de temporada): ");
+				tipoEspectaculo = input.nextInt();
+				input.nextLine();
+				System.out.print("\n");
+
+				if (tipoEspectaculo != 1 && tipoEspectaculo != 2 && tipoEspectaculo != 3) {
+					System.err.print("Error, el tipo de espectáculo introducido no consta en el sistema\n\n");
+
+					systemPause();
+					break;
+				}
+
+				if (tipoEspectaculo == 1) {
+					String strFecha;
+					System.out.print("Introduzca la fecha del espectáculo (dd/MM/yyyy HH:mm): ");
+					strFecha = input.nextLine();
+					System.out.print("\n");
+
+					try {
+						fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(strFecha);
+
+					} catch (ParseException e) {
+						System.err.print(e);
+
+						systemPause();
+						break;
+					}
+
+					try {
+						gestorEspectaculos.crearEspectaculoPuntual(titulo, categoria, descripcion, fecha, localidades);
+					} catch (Exception e) {
+						System.err.print(e);
+
+						systemPause();
+						break;
+					}
+
+					System.out.print("Espectáculo puntual creado correctamente\n\n");
+
+					systemPause();
+					break;
+
+				} else if (tipoEspectaculo == 2) {
+					ArrayList<Date> fechas = new ArrayList<Date>();
+					String strFecha;
+
+					System.out.print("Introduzca el el número de fechas en las que se realizará el espectáculo: ");
+					int nFechas = input.nextInt();
+					input.nextLine();
+					System.out.print("\n");
+
+					for (int i = 1; i <= nFechas; ++i) {
+
+						System.out.print("Introduzca la fecha número " + i + " (dd/MM/yyyy HH:mm): ");
+						strFecha = input.nextLine();
+						try {
+							fechas.add(new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(strFecha));
+						} catch (ParseException e) {
+							System.err.print(e);
+
+							systemPause();
+							break;
+						}
+
+					}
+
+					try {
+						gestorEspectaculos.crearEspectaculoPaseMultiple(titulo, categoria, descripcion, fechas,
+								localidades);
+					} catch (Exception e) {
+						System.err.print(e);
+
+						systemPause();
+						break;
+					}
+
+					System.out.print("Espectáculo de pase múltiple creado correctamente\n\n");
+
+					systemPause();
+					break;
+
+				} else {
+					String strFechaInicio, strFechaFinal;
+					Date fechaInicio, fechaFinal;
+
+					System.out.print("Introduzca la fecha de inicio del pase de temporada (dd/MM/yyyy HH:mm): ");
+					strFechaInicio = input.nextLine();
+					System.out.print("Introduzca la fecha de finalización del pase de temporada (dd/MM/yyyy HH:mm): ");
+					strFechaFinal = input.nextLine();
+
+					try {
+						fechaInicio = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(strFechaInicio);
+						fechaFinal = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(strFechaFinal);
+
+					} catch (ParseException e) {
+						System.err.print(e);
+
+						systemPause();
+						break;
+					}
+
+					try {
+						gestorEspectaculos.crearEspectaculoTemporada(titulo, categoria, descripcion, fechaInicio,
+								fechaFinal, localidades);
+					} catch (Exception e) {
+						System.err.print(e);
+
+						systemPause();
+						break;
+					}
+
+					System.out.print("Espectáculo de pase de temporada creado correctamente\n\n");
+
+					systemPause();
+					break;
+
+				}
+
+				// TODO
+				// crearEspectaculo(), debeis hacer la función abstracta genérica para el tipo
+				// de espectáculo en cuestión
+
 			case 2:
 				System.out.print("Introduzca el título del espectáculo a eliminar: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
-				
+
 				try {
 					gestorEspectaculos.cancelarTodasSesionesEspectaculo(titulo);
 				} catch (Exception error) {
 					System.err.print(error);
-					
+
 					systemPause();
 					break;
 				}
-				
+
 				System.out.print("Sesiones eliminadas correctamente\n\n");
-				
+
 				systemPause();
 				break;
-				
+
 			case 3:
 				// TODO
 				System.out.print("Introduzca el título del espectáculo a eliminar: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
+
+
+				System.out.print("Introduzca la fecha de la sesión a eliminar (dd/MM/yyyy HH:mm): ");
+				String strfechaEliminar = input.nextLine();
+				System.out.print("\n");
 				
-				System.out.print("Introduzca las localidades de la sesión a eliminar: ");
-				localidades = input.nextInt();
-				input.nextLine();
+				Date fechaEliminar;
 				
-				System.out.print("Introduzca la fecha de la sesión a eliminar: ");
+				try {
+					fechaEliminar = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(strfechaEliminar);
+				} catch (ParseException e) {
+					System.err.print(e);
+					
+					systemPause();
+					break;
+				}
 				
-				// TODO LLAMAR A LA FUNCIÓN QUE BORRA UNA SESIÓN EN CONCRETO DE UN ESPECTÁCULO PARA PODER PASARLE UNA NEW CRITICA(LOCALIDADES, FECHA)
+				try {
+					gestorEspectaculos.cancelarSesionEspectaculo(titulo, fechaEliminar);
+				} catch (Exception e) {
+					System.err.print(e);
+				}
+				
+				systemPause();
+				
+				
 				break;
-			
+
 			case 4:
 				System.out.print("Introduzca el título del espectáculo a eliminar: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
-				
+
 				System.out.print("Introduzca la nueva categoría del espectáculo: ");
 				categoria = input.nextLine();
 				System.out.print("\n");
-				
+
 				System.out.print("Introduzca la nueva descripción del espectáculo: ");
 				descripcion = input.nextLine();
 				System.out.print("\n");
-				
 				try {
 					gestorEspectaculos.actualizarDatosEspectaculo(titulo, categoria, descripcion);
+					
 				} catch (Exception error) {
 					System.err.print(error);
-					
 					systemPause();
 					break;
 				}
 				
-				System.out.print("Datos actualizados correctamente\n\n");
+				Espectaculo e = null;
 				
+				try {
+					e = gestorEspectaculos.getEspectaculo(titulo);
+				} catch (Exception error) {
+					System.err.print(error);
+					
+					systemPause(); 
+					break;
+				}
+
+				System.out.print("Datos actualizados correctamente\n\n");
+
 				systemPause();
 				break;
-				
+
 			case 5:
 				System.out.print("Introduzca el título del espectáculo: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
-				@SuppressWarnings("null") int numeroEntradas = (Integer) null;
+				@SuppressWarnings("null")
+				int numeroEntradas = (Integer) null;
 				try {
-				int indiceEspectaculo = gestorEspectaculos.getIndiceEspectaculo(titulo);
-				for(int i=0;i<gestorEspectaculos.getEspectaculos().get(indiceEspectaculo).getSesiones().size();i++) {	
-				
-				
-					numeroEntradas = gestorEspectaculos.getNumeroEntradas(titulo,gestorEspectaculos.getEspectaculos().get(indiceEspectaculo).getSesiones().get(i).getFecha());
-					System.out.format("El espectáculo %s, en la sesión %d, posee un total de %s entradas\n", titulo,i,numeroEntradas);
-				}
-				} catch(Exception error) {
+					int indiceEspectaculo = gestorEspectaculos.getIndiceEspectaculo(titulo);
+					for (int i = 0; i < gestorEspectaculos.getEspectaculos().get(indiceEspectaculo).getSesiones()
+							.size(); i++) {
+
+						numeroEntradas = gestorEspectaculos.getNumeroEntradas(titulo, gestorEspectaculos
+								.getEspectaculos().get(indiceEspectaculo).getSesiones().get(i).getFecha());
+						System.out.format("El espectáculo %s, en la sesión %d, posee un total de %s entradas\n", titulo,
+								i, numeroEntradas);
+					}
+				} catch (Exception error) {
 					System.err.print(error);
 				}
 				systemPause();
 				break;
-			
+
 			case 6:
 				System.out.print("Introduzca el título del espectáculo: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
-				@SuppressWarnings("null") int numeroLocalidades = (Integer) null;
+				@SuppressWarnings("null")
+				int numeroLocalidades = (Integer) null;
 				try {
-				int indexEspectaculo = gestorEspectaculos.getIndiceEspectaculo(titulo);
-				for(int i=0;i<gestorEspectaculos.getEspectaculos().get(indexEspectaculo).getSesiones().size();i++) {	
-				
-					numeroLocalidades = gestorEspectaculos.getNumeroLocalidades(titulo,gestorEspectaculos.getEspectaculos().get(indexEspectaculo).getSesiones().get(i).getFecha());
-					System.out.println("Sesión 1: " + numeroLocalidades);}
-				} catch(Exception error) {
+					int indexEspectaculo = gestorEspectaculos.getIndiceEspectaculo(titulo);
+					for (int i = 0; i < gestorEspectaculos.getEspectaculos().get(indexEspectaculo).getSesiones()
+							.size(); i++) {
+
+						numeroLocalidades = gestorEspectaculos.getNumeroLocalidades(titulo, gestorEspectaculos
+								.getEspectaculos().get(indexEspectaculo).getSesiones().get(i).getFecha());
+						System.out.println("Sesión 1: " + numeroLocalidades);
+					}
+				} catch (Exception error) {
 					System.err.print(error);
 				}
 				systemPause();
 				break;
-			
+
 			case 7:
 				System.out.print("Introduzca el título del espectáculo: ");
 				titulo = input.nextLine();
 				System.out.print("\n");
-				
+
 				ArrayList<Sesion> sesiones = new ArrayList<Sesion>();
-				
+
 				try {
 					sesiones = gestorEspectaculos.proximoEspectaculo(titulo);
-					for (int i=0;i<sesiones.size();i++) {
-						System.out.println("Fecha: "+ sesiones.get(i).getFecha() + "\nLocalidades disponibles: "+ sesiones.get(i).getLocalidades()+"\nEntradas Vendidas:" + sesiones.get(i).getVendidas()+"\n");
-					}
+
 				} catch (Exception error) {
 					System.err.print(error);
+
+					systemPause();
+					break;
+				}
+				
+				if(sesiones.size() == 0) {
+					System.err.print("El espectáculo no tiene ninguna sesión\n\n");
 					
 					systemPause();
 					break;
 				}
+				
+				for (int i = 0; i < sesiones.size(); i++) {
+					System.out.println("Fecha: " + sesiones.get(i).getFecha() + "\nLocalidades disponibles: "
+							+ sesiones.get(i).getLocalidades() + "\nEntradas Vendidas:" + sesiones.get(i).getVendidas()
+							+ "\n");
+				}
+
 				systemPause();
 				break;
-			
+
 			case 8:
 				System.out.print("Introduzca la categoría de espectáculos a obtener: ");
 				categoria = input.nextLine();
 				System.out.print("\n");
-				
-				ArrayList<Espectaculo> espect = null;
-				
+
+				ArrayList<Espectaculo> sesionesCategoria = null;
+
 				try {
-					espect = gestorEspectaculos.getEspectaculosCategoria(categoria);
+					sesionesCategoria = gestorEspectaculos.getEspectaculosCategoria(categoria);
 				} catch (Exception error) {
 					System.err.print(error);
-					
+
 					systemPause();
 					break;
 				}
-				
+
 				// TODO -> Hacer la impresión de todos los espectáculos disponibles
+				// Imprimir el titulo y los datos del espectaculo \n
+				// Imprimes las sesiones
 				
+				for(int i = 0; i < sesionesCategoria.size(); ++i) {
+					System.out.print("[" + (i + 1) + "]\n" + "Título: " + sesionesCategoria.get(i).getTitulo() + "\n" + "Categoría: " + sesionesCategoria.get(i).getCategorias() + "\n" + "Descripción: " + sesionesCategoria.get(i).getDescripcion() + "\n\n");
+				}
+				
+				
+				
+
 				break;
-				
-			case 9: 
-				
+
+			case 9:
+
+				return;
+
+			case 10:
 				try {
 					gestorEspectaculos.guardarFicheros();
 				} catch (Exception error) {
 					System.err.print(error);
-					
+
 					systemPause();
 					System.exit(1);
 				}
 				System.exit(0);
-				
+
 			}
-				
 
 		}
 	}
@@ -710,4 +894,5 @@ public class Main {
 	}
 
 }
+
 
