@@ -11,13 +11,13 @@ public abstract class Espectaculo {
 	String descripcion;
 	ArrayList<Sesion> sesiones;
 
-	
-	Espectaculo(String titulo,String categoria,String descripcion){
-		this.titulo=titulo;
-		this.categorias=categoria;
-		this.descripcion=descripcion;
+	Espectaculo(String titulo, String categoria, String descripcion, ArrayList<Sesion> sesiones) {
+		this.titulo = titulo;
+		this.categorias = categoria;
+		this.descripcion = descripcion;
+		this.sesiones = sesiones;
 	}
-	
+
 	/**
 	 * Función que devuelve el título del Espectáculo
 	 * 
@@ -115,27 +115,21 @@ public abstract class Espectaculo {
 	 * Función que elimina una sesión de un espectaculo
 	 * 
 	 * 
-	 * @param sesion Sesión a eliminar
+	 * @param fecha Fecha y hora de la sesión a eliminar
 	 * 
 	 * @author Ricardo Espantaleón Pérez
 	 */
-	protected void eliminaSesion(Sesion sesion) {
+	protected void eliminaSesion(Date fecha) {
 		for (int i = 0; i < sesiones.size(); ++i) {
-			if (sesiones.get(i).equals(sesion)) {
+			if (sesiones.get(i).getFecha().compareTo(fecha) == 0) {
 				sesiones.remove(i);
 				break;
 			}
 		}
 	}
 
-
-	/**
-	 * Función que comprueba que quedan entradas disponibles de un espectáculo
-	 * 
-	 * @return Devuelve verdadero en caso de que haya entradas disponibles de dicho espectaculo, falso en caso contrario
-	 */
 	public boolean entradasDisponibles() {
-		
+
 		return true;
 	}
 
