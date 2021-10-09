@@ -7,9 +7,9 @@ import java.util.Date;
 public class EspectaculoPaseMultiple extends Espectaculo {
 
 	// Variables
-	ArrayList<Sesion> sesiones;
 
 	// Métodos
+
 	/**
 	 * Constructor parametrizado de la clase EspectaculoPaseMultiple
 	 * 
@@ -21,17 +21,11 @@ public class EspectaculoPaseMultiple extends Espectaculo {
 	 * @author Enrique Estevez Mayoral
 	 */
 	public EspectaculoPaseMultiple(String titulo, String categorias, String descripcion, ArrayList<Sesion> sesiones) {
-		super (titulo,categorias,descripcion);
+		super(titulo, categorias, descripcion, sesiones);
 		this.titulo = titulo;
 		this.categorias = categorias;
 		this.descripcion = descripcion;
 		this.sesiones = sesiones;
 	}
-	public ArrayList<Sesion> getSesiones(){
-		return sesiones;
-	}
-	public void CrearSesion(Date fecha,int localidades) {
-		sesiones.add(new Sesion(localidades,fecha));
-	}
-	
+
 }
