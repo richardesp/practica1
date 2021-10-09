@@ -42,7 +42,7 @@ public class GestorDeEspectaculos {
 	// las criticas
 	static final Properties ficheroPropiedades = new Properties();
 	//factory
-	ConcreteFactory factoria;
+	ConcreteFactory factoria = new ConcreteFactory();
 
 	// Métodos
 
@@ -647,10 +647,18 @@ public class GestorDeEspectaculos {
 	 * @param date        la fecha de la sesión del espectáculo
 	 * @return un espectaculo
 	 * @author Nicolás López
+	 * @throws Exception 
 	 */
-	public void introducirEspectaculoPuntual(String titulo, String categorias, String descripcion, Date fecha,
-			int localidades) {
-	espectaculos.add(factoria.crearEspectaculoPuntual(titulo,categorias,descripcion,fecha,localidades));
+	public void crearEspectaculoPuntual(String titulo, String categorias, String descripcion, Date fecha,
+			int localidades) throws Exception {
+	if(buscarEspectaculoTitulo(titulo) != -1)
+	throw new Exception("Error, ya existe el espectáculo");
+   
+	try {
+		espectaculos.add(factoria.crearEspectaculoPuntual(titulo,categorias,descripcion,fecha,localidades));
+	} catch (Exception e) {
+		throw new Exception(e);
+	}
 	}
 
 	/**
@@ -663,10 +671,18 @@ public class GestorDeEspectaculos {
 	 * @param localidades las localidades que tiene el sitio donde se celebra
 	 * @return un espectaculo
 	 * @author Nicolás López
+	 * @throws Exception 
 	 */
 	public void crearEspectaculoPaseMultiple(String titulo, String categorias, String descripcion,
-			ArrayList<Date> fechas, int localidades) {
+			ArrayList<Date> fechas, int localidades) throws Exception {
+		if(buscarEspectaculoTitulo(titulo) != -1)
+	throw new Exception("Error, ya existe el espectáculo");
+		try{
 		espectaculos.add(factoria.crearEspectaculoPaseMultiple(titulo, categorias, descripcion, fechas, localidades));
+	} catch (Exception error) {
+		throw new Exception(error);
+  }
+	
 	}
 
 	/**
@@ -679,11 +695,17 @@ public class GestorDeEspectaculos {
 	 * @param localidades las localidades que tiene el sitio donde se celebra
 	 * @return un espectaculo
 	 * @author Nicolás López
+	 * @throws Exception 
 	 */
 	public void crearEspectaculoTemporada(String titulo, String categorias, String descripcion, Date fechaInicio,
-			Date fechaFin, int localidades) {
-		
-		espectaculos.add(factoria.crearEspectaculoTemporada(titulo, categorias, descripcion, fechaInicio, fechaFin, localidades));
+			Date fechaFin, int localidades) throws Exception {
+		if(buscarEspectaculoTitulo(titulo) != -1)
+	throw new Exception("Error, ya existe el espectáculo");
+		try {
+			espectaculos.add(factoria.crearEspectaculoTemporada(titulo, categorias, descripcion, fechaInicio, fechaFin, localidades));
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 	}
 
 	/**
@@ -719,6 +741,7 @@ public class GestorDeEspectaculos {
 			if (titulo.equalsIgnoreCase(espectaculos.get(i).getTitulo()))
 				return i;
 		}
+		
 		return -1;
 	}
 
@@ -729,12 +752,15 @@ public class GestorDeEspectaculos {
 	 * @return el indice del vector donde se encuentra o -1 si no se encuentra
 	 * @author Nicolás López
 	 */
-	public int buscarEspectaculoCategoria(String categorias) {
+	public ArrayList<Espectaculo> buscarEspectaculoCategoria(String categorias) throws Exception{
+		ArrayList<Espectaculo> categoria = new ArrayList<Espectaculo>();
 		for (int i = 0; i < espectaculos.size(); i++) {
 			if (categorias.equalsIgnoreCase(espectaculos.get(i).getCategorias()))
-				return i;
+				categoria.add(espectaculos.get(i));
 		}
-		return -1;
+		if(categoria.isEmpty())
+		throw new Exception("Error, no existe ningún espectáculo con esa categoria");
+		return categoria;
 	}
 
 	/**
@@ -784,7 +810,7 @@ public class GestorDeEspectaculos {
 	 * @author Ricardo Espantaleón
 	 */
 	public void cancelarTodasSesionesEspectaculo(String titulo) throws Exception {
-		if (!existeEspectaculo(titulo))
+		if (buscarEspectaculoTitulo(titulo) == -1)
 			throw new Exception("El espectáculo no existe en el sistema\n\n");
 
 		for (int i = 0; i < espectaculos.size(); ++i) {
@@ -827,16 +853,17 @@ public class GestorDeEspectaculos {
 	 * @throws Exception Lanzará una excepción en caso de que no exista el
 	 *                   espectáculo o la sesión
 	 */
-	public void cancelarSesionEspectaculo(String titulo, Sesion sesion) throws Exception {
-		if (!existeEspectaculo(titulo))
+	public void cancelarSesionEspectaculo(String titulo, Date fecha) throws Exception {
+		if (buscarEspectaculoTitulo(titulo) == -1)
 			throw new Exception("El espectáculo no existe en el sistema\n\n");
 
-		if (!existeSesion(sesion))
+		int indiceEspetaculo = buscarEspectaculoTitulo(titulo);
+		if (buscarFecha(indiceEspetaculo, fecha) == -1)
 			throw new Exception("La sesión no existe en el sistema\n\n");
 
 		for (int i = 0; i < espectaculos.size(); ++i) {
 			if (espectaculos.get(i).getTitulo().equalsIgnoreCase(titulo)) {
-				espectaculos.get(i).eliminaSesion(sesion);
+				espectaculos.get(i).eliminaSesion(fecha);
 				break;
 			}
 		}
@@ -897,19 +924,18 @@ public class GestorDeEspectaculos {
 	 * @author Ricardo Espantaleón Pérez
 	 */
 	public void actualizarDatosEspectaculo(String titulo, String categoria, String descripcion) throws Exception {
-		@SuppressWarnings("null")
-		int indiceEspectaculo = (Integer) null;
+		int indiceEspectaculo;
 
 		try {
-			indiceEspectaculo = getIndiceEspectaculo(titulo);
+			indiceEspectaculo = buscarEspectaculoTitulo(titulo);
 		} catch (Exception error) {
 			throw new Exception(error);
 		}
 
-		if (categoria != null)
+		if (categoria != "")
 			espectaculos.get(indiceEspectaculo).setCategorias(categoria);
 
-		if (descripcion != null)
+		if (descripcion != "")
 			espectaculos.get(indiceEspectaculo).setCategorias(categoria);
 	}
 
@@ -1010,13 +1036,15 @@ public class GestorDeEspectaculos {
 		return password.equalsIgnoreCase("PW1234");
 	}
 	
-	// Revisar la clase Critica, la cual recibe un espectaculo como variable, no es eficiente, mejor asignar la variable titulo a espectaculo.titulo
-	
+	// Revisar la clase Critica, la cual recibe un espectaculo como variable, no es
+	// eficiente, mejor asignar la variable titulo a espectaculo.titulo
+
 	/**
 	 * La función añade una crítica nueva al vector
 	 * 
 	 * @param critica la crítica ya inicializada
-	 * @exception Se lanza si la crítica ya existe o si el espectáculo asociado todavía no se ha celebrado
+	 * @exception Se lanza si la crítica ya existe o si el espectáculo asociado
+	 *               todavía no se ha celebrado
 	 * @return
 	 * @author Nicolás López
 	 * 
@@ -1024,15 +1052,21 @@ public class GestorDeEspectaculos {
 	public void crearCritica(Critica critica) throws Exception {
 		if (criticaCreada(critica))
 			throw new Exception("Crítica ya existente en el sistema");
-		int indiceEspectaculo = buscarEspectaculoTitulo(critica.getTitulo());
-		for(int i=0;i<espectaculos.get(indiceEspectaculo).getSesiones().size();i++) {
-		boolean variable=false;	
 		
-		if(fechaMayorActual(espectaculos.get(indiceEspectaculo).getSesiones().get(i).getFecha()) && variable == false) {
-			// Por tanto no se ha celebrado
-		criticas.add(critica);
-		variable= true;
-		}
+		int indiceEspectaculo = buscarEspectaculoTitulo(critica.getTitulo());
+		
+		if(indiceEspectaculo == -1)
+			throw new Exception("No existe ningún espectáculo con ese título en el sistema\n\n");
+		
+		for (int i = 0; i < espectaculos.get(indiceEspectaculo).getSesiones().size(); i++) {
+			boolean variable = false;
+
+			if (fechaMayorActual(espectaculos.get(indiceEspectaculo).getSesiones().get(i).getFecha())
+					&& variable == false) {
+				// Por tanto no se ha celebrado
+				criticas.add(critica);
+				variable = true;
+			}
 		}
 	}
 	
@@ -1091,15 +1125,15 @@ public class GestorDeEspectaculos {
 	 * @pre Debe tener un número de entradas > 0
 	 */
 	public ArrayList<Sesion> proximoEspectaculo(String titulo) throws Exception {
-		if(buscarEspectaculoTitulo(titulo) == -1) {
+		if (buscarEspectaculoTitulo(titulo) == -1) {
 			throw new Exception("No existe el espectáculo");
 		}
 		int indice = buscarEspectaculoTitulo(titulo);
 		ArrayList<Sesion> sesionesFecha = new ArrayList<Sesion>();
-		for(int i = 0;i<espectaculos.get(indice).getSesiones().size();i++) {
-		if(fechaMayorActual(espectaculos.get(indice).getSesiones().get(i).getFecha()) == true) {
-			sesionesFecha.add(espectaculos.get(indice).getSesiones().get(i));
-		}
+		for (int i = 0; i < espectaculos.get(indice).getSesiones().size(); i++) {
+			if (fechaMayorActual(espectaculos.get(indice).getSesiones().get(i).getFecha()) == true) {
+				sesionesFecha.add(espectaculos.get(indice).getSesiones().get(i));
+			}
 		}
 		return sesionesFecha;
 	}
@@ -1119,10 +1153,16 @@ public class GestorDeEspectaculos {
 	 */
 	public ArrayList<Espectaculo> getEspectaculosCategoria(String categoria) throws Exception {
 		ArrayList<Espectaculo> retorno = new ArrayList<Espectaculo>();
+		
+		
 		for (int i = 0; i < espectaculos.size(); i++) {
 			if (categoria.equalsIgnoreCase(espectaculos.get(i).getCategorias()))
 				retorno.add(espectaculos.get(i));
 		}
+		
+		if(retorno.isEmpty())
+			throw new Exception("No existe ningún espectáculo asociado a esa categoría\n\n");
+		
 		return retorno;
 	}
 	
